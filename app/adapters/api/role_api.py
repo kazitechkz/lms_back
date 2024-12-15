@@ -39,18 +39,12 @@ class RoleApi:
         use_case = AllRolesCase(db)
         return await use_case.execute()
 
-    async def get(
-        self,
-        id: PathConstants.IDPath,
-        db: AsyncSession = Depends(get_db)
-    ):
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
         use_case = GetRoleCase(db)
         return await use_case.execute(role_id=id)
 
     async def get_by_value(
-        self,
-        value: PathConstants.ValuePath,
-        db: AsyncSession = Depends(get_db)
+        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db)
     ):
         use_case = GetRoleByValueCase(db)
         return await use_case.execute(role_value=value)

@@ -18,14 +18,14 @@ class RoleRDTO(RoleDTO):
     title_ru: DTOConstant.StandardTitleRu
     title_kk: DTOConstant.StandardTitleKk
     title_en: DTOConstant.StandardTitleEn
-    value:DTOConstant.StandardValue
+    value: DTOConstant.StandardValue
     can_register: bool = Field(
         default=True, description="Может ли роль регистрироваться"
     )
     is_admin: bool = Field(
         default=False, description="Является ли роль административной"
     )
-    created_at:  DTOConstant.StandardCreatedAt
+    created_at: DTOConstant.StandardCreatedAt
     updated_at: DTOConstant.StandardUpdatedAt
 
     class Config:

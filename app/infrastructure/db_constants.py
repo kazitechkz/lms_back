@@ -156,9 +156,7 @@ class ColumnConstants:
 
 
 class DTOConstant:
-    StandardID = Annotated[
-        int, Field(description="Уникальный идентификатор")
-    ]
+    StandardID = Annotated[int, Field(description="Уникальный идентификатор")]
 
     StandardTitleRu = Annotated[
         str,
@@ -193,17 +191,23 @@ class DTOConstant:
     ]
 
     StandardVarchar = Annotated[
-        str, Field(max_length=FieldConstants.STANDARD_LENGTH, description="Строковое поле до 256 символов")
+        str,
+        Field(
+            max_length=FieldConstants.STANDARD_LENGTH,
+            description="Строковое поле до 256 символов",
+        ),
     ]
 
-    StandardCreatedAt = Annotated[
-        datetime, Field(description="Дата создания")
-    ]
+    StandardCreatedAt = Annotated[datetime, Field(description="Дата создания")]
 
-    StandardUpdatedAt = Annotated[
-        datetime, Field(description="Дата обновления")
-    ]
+    StandardUpdatedAt = Annotated[datetime, Field(description="Дата обновления")]
+
 
 class PathConstants:
-    IDPath =  Annotated[int,Path(gt=0, description="Уникальный идентификатор")]
-    ValuePath = Annotated[str,Path(max_length=FieldConstants.STANDARD_LENGTH, description="Уникальное значение")]
+    IDPath = Annotated[int, Path(gt=0, description="Уникальный идентификатор")]
+    ValuePath = Annotated[
+        str,
+        Path(
+            max_length=FieldConstants.STANDARD_LENGTH, description="Уникальное значение"
+        ),
+    ]
