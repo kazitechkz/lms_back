@@ -7,8 +7,6 @@ from app.adapters.repositories.role.role_repository import RoleRepository
 
 
 class AllRolesCase:
-    """Use Case для получения всех ролей."""
-
     def __init__(self, db: AsyncSession):
         self.role_repository = RoleRepository(db)
 
