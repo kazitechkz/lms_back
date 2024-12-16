@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
 from app.infrastructure.db_constants import DTOConstant
@@ -30,3 +27,16 @@ class RoleRDTO(RoleDTO):
 
     class Config:
         from_attributes = True
+
+
+class RoleCDTO(BaseModel):
+    title_ru: DTOConstant.StandardTitleRu
+    title_kk: DTOConstant.StandardTitleKk
+    title_en: DTOConstant.StandardTitleEn
+    value: DTOConstant.StandardValue
+    can_register: bool = Field(
+        default=False, description="Может ли роль регистрироваться"
+    )
+    is_admin: bool = Field(
+        default=False, description="Является ли роль административной"
+    )

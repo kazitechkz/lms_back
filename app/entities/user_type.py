@@ -1,11 +1,10 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import List
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.database import Base
-from app.infrastructure.db_constants import (
-    AppTableNames,
-    ColumnConstants,
-    FieldConstants,
-)
+from app.infrastructure.db_constants import (AppTableNames, ColumnConstants,
+                                             FieldConstants)
 
 
 class UserTypeModel(Base):
@@ -17,3 +16,9 @@ class UserTypeModel(Base):
     value: Mapped[ColumnConstants.StandardUniqueValue]
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
+
+    users: Mapped[AppTableNames.UserModelName] = relationship(
+        AppTableNames.UserModelName,
+        back_populates="user_type",
+        cascade="all, delete-orphan",
+    )

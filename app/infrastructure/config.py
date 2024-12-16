@@ -33,6 +33,13 @@ class AppConfiguration(BaseSettings):
 
     app_status: str = Field(..., env="APP_STATUS")
 
+    aws_access_key_id: str = Field(..., env="AWS_ACCESS_KEY_ID")
+    aws_secret_access_key: str = Field(..., env="AWS_SECRET_ACCESS_KEY")
+    aws_region_name: str = Field(..., env="AWS_REGION_NAME")
+    aws_s3_bucket_name: str = Field(..., env="AWS_S3_BUCKET_NAME")
+
+    static_folder: str = "static"
+
     @property
     def get_db_url(self) -> str:
         return f"{self.db_connection}://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"

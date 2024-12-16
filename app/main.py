@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 from infrastructure.config import app_config
+from starlette.staticfiles import StaticFiles
 
 from app.core.controllers import include_routers
 from app.seeders.runner import run_seeders
@@ -26,7 +27,7 @@ app = FastAPI(
 
 # Включаем все роутеры
 include_routers(app)
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Запуск сервера
 if __name__ == "__main__":

@@ -17,3 +17,6 @@ class GetRoleCase(BaseUseCase[RoleRDTO]):
         if not role:
             raise ValueError("Роль не найдена")
         return RoleRDTO.from_orm(role)
+
+    async def validate(self):
+        pass

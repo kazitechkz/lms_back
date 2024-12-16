@@ -102,11 +102,13 @@ class BaseRepository(Generic[T]):
             await self.db.rollback()
             raise ValueError(self._parse_integrity_error(e))
 
-    async def update(self, obj: T, data: dict[str, Any]) -> T:
+    async def update(self, obj: T, dto: BaseModel) -> T:
         """Обновление объекта."""
         try:
-            for field, value in data.items():
-                setattr(obj, field, value)
+            # Обновляем только те поля, которые заданы в DTO
+            for field, value in dto.dict(exclude_unset=True).items():
+                if hasattr(obj, field):
+                    setattr(obj, field, value)
             await self.db.commit()
             await self.db.refresh(obj)
             return obj
@@ -114,13 +116,16 @@ class BaseRepository(Generic[T]):
             await self.db.rollback()
             raise ValueError(self._parse_integrity_error(e))
 
-    async def delete(self, id: int) -> None:
+    async def delete(self, id: int) -> bool:
         """Удаление объекта."""
         obj = await self.get(id)
         if not obj:
             raise AppExceptionResponse.not_found(message="Не найдено")
         await self.db.delete(obj)
         await self.db.commit()
+        # Проверяем, что объект больше не существует
+        deleted_obj = await self.get(id)
+        return deleted_obj is None
 
     def _parse_integrity_error(self, error: IntegrityError) -> str:
         """Парсинг ошибок уникальности."""

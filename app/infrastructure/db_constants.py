@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Annotated, Optional
 
 from fastapi import Path
 from pydantic import EmailStr, Field
-from sqlalchemy import Numeric, String, Text, text
+from sqlalchemy import Date, Numeric, String, Text, text, Integer
 from sqlalchemy.orm import mapped_column
 
 
@@ -16,6 +16,8 @@ class AppTableNames:
     UserTypeTableName = "user_types"
     OrganizationTypeTableName = "organization_types"
     CourseCategoryTableName = "course_categories"
+    UserTableName = "users"
+    FileTableName = "files"
 
     # Model Names
     RoleModelName = "RoleModel"
@@ -25,6 +27,8 @@ class AppTableNames:
     UserTypeModelName = "UserTypeModel"
     OrganizationModelName = "OrganizationModel"
     CourseCategoryModelName = "CourseCategoryModel"
+    UserModelName = "UserModel"
+    FileModelName = "FileModel"
 
 
 class AppDbValueConstants:
@@ -144,7 +148,7 @@ class ColumnConstants:
         ),
     ]
     StandardNullablePrice = Annotated[
-        float,
+        Optional[float],
         mapped_column(
             Numeric(
                 precision=FieldConstants.PRICE_PRECISION,
@@ -153,6 +157,14 @@ class ColumnConstants:
             nullable=True,
         ),
     ]
+
+    StandardNullableDate = Annotated[
+        Optional[date], mapped_column(Date(), nullable=True)
+    ]
+    StandardDate = Annotated[date, mapped_column(Date())]
+
+    StandardInteger = Annotated[int, mapped_column(Integer())]
+    StandardNullableInteger = Annotated[Optional[int], mapped_column(Integer(),nullable=True)]
 
 
 class DTOConstant:
