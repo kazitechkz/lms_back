@@ -10,3 +10,5 @@ isort==5.13.2
 alembic==1.14.0
 greenlet==3.1.1
 boto3==1.35.81
+python-jose==3.3.0
+passlib==1.7.4
