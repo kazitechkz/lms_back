@@ -2,6 +2,8 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from infrastructure.config import app_config
 from starlette.staticfiles import StaticFiles
 
@@ -14,6 +16,11 @@ async def lifespan(app: FastAPI):
     await run_seeders()
     yield
 
+origins = [
+    "http://localhost",
+    "http://localhost:5173",
+]
+
 
 app = FastAPI(
     title=app_config.app_name,
@@ -23,6 +30,14 @@ app = FastAPI(
     debug=True,
     docs_url=app_config.app_docs_url,
     redoc_url=None,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Включаем все роутеры

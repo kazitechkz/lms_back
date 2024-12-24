@@ -1,8 +1,7 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped
 
 from app.infrastructure.database import Base
-from app.infrastructure.db_constants import (AppTableNames, ColumnConstants,
-                                             FieldConstants)
+from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
 
 
 class LanguageModel(Base):

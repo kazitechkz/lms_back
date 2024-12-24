@@ -92,6 +92,8 @@ class AppDbValueConstants:
 class FieldConstants:
     # Columns
     STANDARD_LENGTH = 256
+    STANDARD_TEXT = 1000
+    STANDARD_LONG_TEXT = 2000
     PRICE_PRECISION = 10
     PRICE_SCALE = 2
     IIN_LENGTH = 12
@@ -207,6 +209,14 @@ class DTOConstant:
         Field(
             max_length=FieldConstants.STANDARD_LENGTH,
             description="Строковое поле до 256 символов",
+        ),
+    ]
+
+    StandardText = Annotated[
+        str,
+        Field(
+            max_length=FieldConstants.STANDARD_TEXT,
+            description="Строковое поле до 1000 символов",
         ),
     ]
 
