@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -31,11 +31,22 @@ class UserModel(Base):
     user_type: Mapped[AppTableNames.UserTypeModelName] = relationship(
         AppTableNames.UserTypeModelName, back_populates="users"
     )
+    file_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey(f"{AppTableNames.FileTableName}.id", ondelete="SET NULL"),
+        nullable=True
+    )
+    file: Mapped[Optional[AppTableNames.FileModelName]] = relationship(
+        AppTableNames.FileModelName,
+        foreign_keys=[file_id],
+        back_populates="users",
+    )
+
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
 
-    uploaded_files: Mapped[list[AppTableNames.FileModelName]] = relationship(
+    uploaded_files: Mapped[List[AppTableNames.FileModelName]] = relationship(
         AppTableNames.FileModelName,
+        foreign_keys=f"{AppTableNames.FileModelName}.uploaded_by",
         back_populates="uploaded_by_user",
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
     )

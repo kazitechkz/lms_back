@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -19,10 +19,16 @@ class FileModel(Base):
         nullable=True,
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    uploaded_by_user: Mapped[Optional["User"]] = relationship(
+    uploaded_by_user: Mapped[Optional[AppTableNames.UserModelName]] = relationship(
         AppTableNames.UserModelName,
+        foreign_keys=[uploaded_by],  # Явно указываем внешний ключ
         back_populates="uploaded_files",
-        lazy="joined"  # Автоматическая подгрузка пользователя при запросе файла
     )
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
+
+    users: Mapped[List[AppTableNames.UserModelName]] = relationship(
+        AppTableNames.UserModelName,
+        foreign_keys=f"{AppTableNames.UserModelName}.file_id",  # Указываем, что связь через file_id
+        back_populates="file",
+    )
