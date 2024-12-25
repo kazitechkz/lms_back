@@ -1,7 +1,7 @@
 from typing import Any, Generic, List, Optional, TypeVar
 
 from pydantic import BaseModel
-from sqlalchemy import func, select
+from sqlalchemy import func, select, delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -91,38 +91,58 @@ class BaseRepository(Generic[T]):
             total_items=total_items,
         )
 
-    async def create(self, obj: T) -> T:
+    async def create(self, obj: T, options: Optional[List[Any]] = None) -> T:
         """Создание объекта."""
         try:
             self.db.add(obj)
             await self.db.commit()
-            await self.db.refresh(obj)
+            # Если переданы опции, подгружаем связанные данные
+            if options:
+                query = select(type(obj)).options(*options).filter_by(id=obj.id)
+                result = await self.db.execute(query)
+                obj = result.scalar_one_or_none()
+            else:
+                await self.db.refresh(obj)
             return obj
         except IntegrityError as e:
             await self.db.rollback()
-            raise ValueError(self._parse_integrity_error(e))
+            raise AppExceptionResponse.internal_error(message=self._parse_integrity_error(e))
 
-    async def update(self, obj: T, dto: BaseModel) -> T:
+    async def update(self, obj: T, dto: BaseModel, options: Optional[List[Any]] = None) -> T:
         """Обновление объекта."""
         try:
             # Обновляем только те поля, которые заданы в DTO
             for field, value in dto.dict(exclude_unset=True).items():
                 if hasattr(obj, field):
                     setattr(obj, field, value)
+
             await self.db.commit()
-            await self.db.refresh(obj)
+
+            # Если переданы опции, подгружаем связанные данные
+            if options:
+                query = select(type(obj)).options(*options).filter_by(id=obj.id)
+                result = await self.db.execute(query)
+                obj = result.scalar_one_or_none()
+            else:
+                await self.db.refresh(obj)
+
             return obj
         except IntegrityError as e:
             await self.db.rollback()
-            raise ValueError(self._parse_integrity_error(e))
+            raise AppExceptionResponse.internal_error(message=self._parse_integrity_error(e))
 
     async def delete(self, id: int) -> bool:
-        """Удаление объекта."""
+        """Удаление объекта через execute."""
         obj = await self.get(id)
         if not obj:
             raise AppExceptionResponse.not_found(message="Не найдено")
-        await self.db.delete(obj)
+
+        # Удаляем объект через SQL-запрос
+        await self.db.execute(
+            delete(self.model).where(self.model.id == id)
+        )
         await self.db.commit()
+
         # Проверяем, что объект больше не существует
         deleted_obj = await self.get(id)
         return deleted_obj is None

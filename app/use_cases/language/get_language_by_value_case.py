@@ -11,11 +11,12 @@ class GetLanguageByValueCase(BaseUseCase[LanguageRDTO]):
         self.repository = LanguageRepository(db)
 
     async def execute(self, value: str) -> LanguageRDTO:
-        filters = [self.repository.model.value == value]
-        model = await self.repository.get_first_with_filters(filters)
-        if not model:
-            raise AppExceptionResponse.not_found()
+        model = await self.validate(self.repository, value)
         return LanguageRDTO.from_orm(model)
 
-    async def validate(self):
-        pass
+    async def validate(self, repo: LanguageRepository, value: str):
+        filters = [repo.model.value == value]
+        model = await repo.get_first_with_filters(filters)
+        if not model:
+            raise AppExceptionResponse.not_found(message="Локаль не найдена")
+        return model

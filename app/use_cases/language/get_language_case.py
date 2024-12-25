@@ -11,10 +11,11 @@ class GetLanguageCase(BaseUseCase[LanguageRDTO]):
         self.repository = LanguageRepository(db)
 
     async def execute(self, id: int) -> LanguageRDTO:
-        model = await self.repository.get(id)
-        if not model:
-            raise AppExceptionResponse.not_found()
+        model = await self.validate(self.repository, id)
         return LanguageRDTO.from_orm(model)
 
-    async def validate(self):
-        pass
+    async def validate(self, repo: LanguageRepository, id: int):
+        model = await repo.get(id)
+        if not model:
+            raise AppExceptionResponse.not_found(message="Локаль не найдена")
+        return model

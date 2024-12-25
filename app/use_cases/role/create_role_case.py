@@ -22,4 +22,4 @@ class CreateRoleCase(BaseUseCase[RoleRDTO]):
             raise AppExceptionResponse.bad_request(
                 "Роль с таким значением уже существует"
             )
-        return self.role_repository.model(**dto.dict())
+        return repository.model(**dto.dict())

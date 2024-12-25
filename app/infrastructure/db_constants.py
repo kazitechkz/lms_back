@@ -3,7 +3,7 @@ from typing import Annotated, Optional
 
 from fastapi import Path
 from pydantic import EmailStr, Field
-from sqlalchemy import Date, Numeric, String, Text, text, Integer
+from sqlalchemy import Date, Numeric, String, Text, text, Integer, ForeignKey
 from sqlalchemy.orm import mapped_column
 
 
@@ -104,6 +104,64 @@ class FieldConstants:
 
 class ColumnConstants:
     ID = Annotated[int, mapped_column(primary_key=True)]
+    # ForeignKey унификации с onupdate и ondelete
+    ForeignKeyInteger = (
+        lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[
+            int,
+            mapped_column(
+                Integer(),
+                ForeignKey(
+                    f"{table_name}.{foreign_column}",
+                    onupdate=onupdate,
+                    ondelete=ondelete,
+                ),
+                nullable=False,
+            ),
+        ]
+    )
+    ForeignKeyNullableInteger = (
+        lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[
+            Optional[int],
+            mapped_column(
+                Integer(),
+                ForeignKey(
+                    f"{table_name}.{foreign_column}",
+                    onupdate=onupdate,
+                    ondelete=ondelete,
+                ),
+                nullable=True,
+            ),
+        ]
+    )
+
+    ForeignKeyString = (
+        lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[
+            str,
+            mapped_column(
+                String(length=255),
+                ForeignKey(
+                    f"{table_name}.{foreign_column}",
+                    onupdate=onupdate,
+                    ondelete=ondelete,
+                ),
+                nullable=False,
+            ),
+        ]
+    )
+    ForeignKeyNullableString = (
+        lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[
+            Optional[str],
+            mapped_column(
+                String(length=255),
+                ForeignKey(
+                    f"{table_name}.{foreign_column}",
+                    onupdate=onupdate,
+                    ondelete=ondelete,
+                ),
+                nullable=True,
+            ),
+        ]
+    )
     CreatedAt = Annotated[
         datetime, mapped_column(server_default=text("CURRENT_TIMESTAMP"))
     ]

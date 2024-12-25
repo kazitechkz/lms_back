@@ -16,7 +16,7 @@ class DeleteRoleCase(BaseUseCase[bool]):
         return data
 
     async def validate(self, repository: RoleRepository, id: int):
-        existed = await self.role_repository.get(id=id)
+        existed = await repository.get(id=id)
         if existed is None:
             raise AppExceptionResponse.not_found(message="Роль не найдена")
         if existed.value in AppDbValueConstants.IMMUTABLE_ROLES:

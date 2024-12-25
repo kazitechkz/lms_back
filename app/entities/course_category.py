@@ -13,14 +13,11 @@ class CourseCategoryModel(Base):
     title_kk: Mapped[ColumnConstants.StandardVarchar]
     title_en: Mapped[ColumnConstants.StandardNullableVarchar]
     value: Mapped[ColumnConstants.StandardUniqueValue]
-    parent_id: Mapped[int | None] = mapped_column(
-        ForeignKey(
-            f"{AppTableNames.CourseCategoryTableName}.id",
-            ondelete="SET NULL",
-            onupdate="CASCADE",
-        ),
-        nullable=True,
-    )
+    parent_id: Mapped[ColumnConstants.ForeignKeyNullableInteger(
+        table_name=AppTableNames.CourseCategoryTableName,
+        onupdate="CASCADE",
+        ondelete="SET NULL"
+    )]
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
 
@@ -31,6 +28,5 @@ class CourseCategoryModel(Base):
     )
     children: Mapped[list["CourseCategoryModel"]] = relationship(
         f"{AppTableNames.CourseCategoryModelName}",
-        back_populates="parent",
-        cascade="all, delete-orphan",
+        back_populates="parent"
     )

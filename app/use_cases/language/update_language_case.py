@@ -16,7 +16,7 @@ class UpdateLanguageCase(BaseUseCase[LanguageRDTO]):
         return LanguageRDTO.from_orm(data)
 
     async def validate(self, repository: LanguageRepository, id: int, dto: LanguageCDTO):
-        existed = await self.repository.get(id=id)
+        existed = await repository.get(id=id)
         if existed is None:
             raise AppExceptionResponse.not_found(message="Локаль не найдена")
         if await repository.get_first_with_filters(

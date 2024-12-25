@@ -10,11 +10,11 @@ from app.infrastructure.db_constants import AppTableNames, ColumnConstants
 class FileModel(Base):
     __tablename__ = AppTableNames.FileTableName
     id: Mapped[ColumnConstants.ID]
-    filename:Mapped[ColumnConstants.StandardVarchar]
-    file_path:Mapped[ColumnConstants.StandardText]
-    file_size:Mapped[ColumnConstants.StandardInteger]
-    content_type:Mapped[ColumnConstants.StandardVarchar]
-    uploaded_by:Mapped[Optional[int]] = mapped_column(
+    filename: Mapped[ColumnConstants.StandardVarchar]
+    file_path: Mapped[ColumnConstants.StandardText]
+    file_size: Mapped[ColumnConstants.StandardInteger]
+    content_type: Mapped[ColumnConstants.StandardVarchar]
+    uploaded_by: Mapped[Optional[int]] = mapped_column(
         ForeignKey(f"{AppTableNames.UserTableName}.id", ondelete="SET NULL"),
         nullable=True,
     )

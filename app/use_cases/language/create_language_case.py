@@ -16,7 +16,7 @@ class CreateLanguageCase(BaseUseCase[LanguageRDTO]):
 
     async def validate(self, repository: LanguageRepository, dto: LanguageCDTO):
         if await repository.get_first_with_filters(
-            [repository.model.value == dto.value]
+                [repository.model.value == dto.value]
         ):
             raise AppExceptionResponse.bad_request(
                 "Локаль с таким значением уже существует"

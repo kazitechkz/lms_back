@@ -15,10 +15,10 @@ class GetPermissionCase(BaseUseCase[PermissionRDTO]):
 
     async def execute(self, permission_id: int) -> PermissionRDTO:
         """Получение роли по ID."""
-        permission = await self.permission_repository.get(permission_id)
-        if not permission:
-            raise AppExceptionResponse.not_found("Право не найдено")
+
         return PermissionRDTO.from_orm(permission)
 
-    async def validate(self):
-        pass
+    async def validate(self, repo: PermissionRepository, id: int):
+        permission = await repo.get(id)
+        if not permission:
+            raise AppExceptionResponse.not_found("Право не найдено")

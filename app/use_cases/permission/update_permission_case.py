@@ -16,7 +16,7 @@ class UpdatePermissionCase(BaseUseCase[PermissionRDTO]):
         return PermissionRDTO.from_orm(data)
 
     async def validate(self, repository: PermissionRepository, id: int, dto: PermissionCDTO):
-        existed = await self.permission_repository.get(id=id)
+        existed = await repository.get(id=id)
         if existed is None:
             raise AppExceptionResponse.not_found(message="Право не найдено")
         if await repository.get_first_with_filters(
