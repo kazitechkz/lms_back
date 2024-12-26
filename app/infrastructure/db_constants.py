@@ -4,6 +4,7 @@ from typing import Annotated, Optional
 from fastapi import Path
 from pydantic import EmailStr, Field
 from sqlalchemy import Date, Numeric, String, Text, text, Integer, ForeignKey
+from sqlalchemy.dialects.mssql import JSON
 from sqlalchemy.orm import mapped_column
 
 
@@ -16,6 +17,11 @@ class AppTableNames:
     UserTypeTableName = "user_types"
     OrganizationTypeTableName = "organization_types"
     CourseCategoryTableName = "course_categories"
+    CourseTypeTableName = "course_types"
+    TagTableName = "tags"
+    CourseTableName = "courses"
+    CourseTagTableName = "course_tags"
+    CourseMaterialTableName = "course_materials"
     UserTableName = "users"
     FileTableName = "files"
 
@@ -27,6 +33,11 @@ class AppTableNames:
     UserTypeModelName = "UserTypeModel"
     OrganizationModelName = "OrganizationModel"
     CourseCategoryModelName = "CourseCategoryModel"
+    CourseTypeModelName = "CourseTypeModel"
+    TagModelName = "TagModel"
+    CourseModelName = "CourseModel"
+    CourseTagModelName = "CourseTagModel"
+    CourseMaterialModelName = "CourseMaterialModel"
     UserModelName = "UserModel"
     FileModelName = "FileModel"
 
@@ -57,6 +68,18 @@ class AppDbValueConstants:
             RUSSIAN_VALUE,
             KAZAKH_VALUE,
             ENGLISH_VALUE,
+        ]
+    )
+
+    # CourseTypes
+    PAID_VALUE = "paid"
+    PRIVATE_VALUE = "private"
+    FREE_VALUE = "free"
+    IMMUTABLE_COURSE_TYPES = frozenset(
+        [
+            PAID_VALUE,
+            PRIVATE_VALUE,
+            FREE_VALUE
         ]
     )
     # UserTypes
@@ -171,6 +194,16 @@ class ColumnConstants:
             server_default=text("CURRENT_TIMESTAMP"), onupdate=datetime.now()
         ),
     ]
+
+    # Аннотации для JSON полей
+    JsonField = Annotated[
+        dict, mapped_column(JSON)
+    ]
+
+    JsonNullableField = Annotated[
+        dict, mapped_column(JSON, nullable=True)
+    ]
+
     # Аннотации для стандартных типов
     StandardVarchar = Annotated[
         str, mapped_column(String(length=FieldConstants.STANDARD_LENGTH))

@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.repositories.base_repository import BaseRepository
-from app.entities import RoleModel
+from app.entities.tag import TagModel
 
 
-class RoleRepository(BaseRepository[RoleModel]):
+class TagRepository(BaseRepository[TagModel]):
     def __init__(self, db: AsyncSession) -> None:
-        super().__init__(RoleModel, db)
+        super().__init__(TagModel, db)

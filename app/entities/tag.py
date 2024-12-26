@@ -4,8 +4,8 @@ from app.infrastructure.database import Base
 from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
 
 
-class OrganizationTypeModel(Base):
-    __tablename__ = AppTableNames.OrganizationTypeTableName
+class TagModel(Base):
+    __tablename__ = AppTableNames.TagTableName
     id: Mapped[ColumnConstants.ID]
     title_ru: Mapped[ColumnConstants.StandardVarchar]
     title_kk: Mapped[ColumnConstants.StandardVarchar]

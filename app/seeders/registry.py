@@ -1,3 +1,4 @@
+from app.seeders.course_type_seeder import CourseTypeSeeder
 from app.seeders.language_seeder import LanguageSeeder
 from app.seeders.organization_type_seeder import OrganizationTypeSeeder
 from app.seeders.role_seeder import RoleSeeder
@@ -8,4 +9,5 @@ seeders = [
     LanguageSeeder(),
     UserTypeSeeder(),
     OrganizationTypeSeeder(),
+    CourseTypeSeeder(),
 ]
