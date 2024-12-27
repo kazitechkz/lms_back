@@ -19,6 +19,7 @@ class CourseModel(Base):
     learned_after_course_kk: Mapped[ColumnConstants.StandardText]
     learned_after_course_ru: Mapped[ColumnConstants.StandardText]
     learned_after_course_en: Mapped[ColumnConstants.StandardNullableText]
+    price: Mapped[ColumnConstants.StandardInteger]
     thumbnail: Mapped[ColumnConstants.StandardNullableVarchar]
     author: Mapped[ColumnConstants.StandardNullableVarchar]
 

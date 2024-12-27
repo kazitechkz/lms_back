@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.infrastructure.auth import AuthBearer
 from infrastructure.config import app_config
 from starlette.staticfiles import StaticFiles
 
@@ -28,6 +29,7 @@ app = FastAPI(
     version=app_config.app_version,
     lifespan=lifespan,
     debug=True,
+    dependencies=[Depends(AuthBearer())],
     docs_url=app_config.app_docs_url,
     redoc_url=None,
 )

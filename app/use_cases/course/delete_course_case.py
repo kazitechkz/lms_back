@@ -1,13 +1,13 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.repositories.tag.tag_repository import TagRepository
+from app.adapters.repositories.course.course_repository import CourseRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
 
 
-class DeleteTagCase(BaseUseCase[bool]):
+class DeleteCourseCase(BaseUseCase[bool]):
     def __init__(self, db: AsyncSession):
-        self.repository = TagRepository(db)
+        self.repository = CourseRepository(db)
 
     async def execute(self, id: int) -> bool:
         await self.validate(id=id)
@@ -17,4 +17,4 @@ class DeleteTagCase(BaseUseCase[bool]):
     async def validate(self, id: int):
         existed = await self.repository.get(id=id)
         if existed is None:
-            raise AppExceptionResponse.not_found(message="Тег не найден")
+            raise AppExceptionResponse.not_found(message="Курс не найден")

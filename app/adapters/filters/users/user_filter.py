@@ -3,7 +3,7 @@ from fastapi import Query
 from app.adapters.filters.base_filter import BaseFilter
 
 
-class CourseFilter(BaseFilter):
+class UserFilter(BaseFilter):
     def __init__(
         self,
         per_page: int = Query(
@@ -14,7 +14,7 @@ class CourseFilter(BaseFilter):
             default=None,
             max_length=255,
             min_length=3,
-            description="Поисковый запрос по наименованию курса",
+            description="Поисковый запрос по имени, телефону, почте, иину",
         ),
     ) -> None:
         super().__init__(per_page, page, search)

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.role.role_dto import RoleCDTO, RoleRDTO
+from app.core.auth_core import get_current_user
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
 from app.use_cases.role.all_roles_case import AllRolesCase
@@ -55,7 +56,7 @@ class RoleApi:
             description="Удаление роли по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, db: AsyncSession = Depends(get_db)):
+    async def get_all(self, db: AsyncSession = Depends(get_db), current_user=Depends(get_current_user)):
         use_case = AllRolesCase(db)
         return await use_case.execute()
 

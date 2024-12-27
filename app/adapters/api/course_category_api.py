@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.course_category.course_category_dto import CourseCategoryRDTO, CourseCategoryCDTO
+from app.adapters.dto.course_category.course_category_dto import CourseCategoryRDTO, CourseCategoryCDTO, \
+    CourseCategoryRDTOWithRelated
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
 from app.use_cases.course_category.all_course_category_case import AllCourseCategoryCase
@@ -20,7 +21,7 @@ class CourseCategoryApi:
     def _add_routes(self) -> None:
         self.router.get(
             "/",
-            response_model=list[CourseCategoryRDTO],
+            response_model=list[CourseCategoryRDTOWithRelated],
             summary="Список категории курсов",
             description="Получение списка категории курсов",
         )(self.get_all)
@@ -38,13 +39,13 @@ class CourseCategoryApi:
         )(self.get_by_value)
         self.router.post(
             "/create",
-            response_model=CourseCategoryRDTO,
+            response_model=CourseCategoryRDTOWithRelated,
             summary="Создать категорию",
             description="Создание категории",
         )(self.create)
         self.router.put(
             "/update/{id}",
-            response_model=CourseCategoryRDTO,
+            response_model=CourseCategoryRDTOWithRelated,
             summary="Обновить категорию по уникальному ID",
             description="Обновление категории по уникальному идентификатору",
         )(self.update)

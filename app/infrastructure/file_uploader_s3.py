@@ -4,14 +4,16 @@ import uuid
 import boto3
 from botocore.exceptions import ClientError
 
+from app.core.app_exception_response import AppExceptionResponse
 from app.infrastructure.config import app_config
 
 
 class DocumentUploaderS3:
-    ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".xlsx", ".csv"}
+    ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".xlsx", ".csv", ".png", ".jpg", ".jpeg", ".webp"}
     ALLOWED_MAX_SIZE_MB = 100
 
     def __init__(self):
+        self.bucket_name = app_config.aws_s3_bucket_name
         self.s3_client = boto3.client(
             "s3",
             aws_access_key_id=app_config.aws_access_key_id,
@@ -25,17 +27,17 @@ class DocumentUploaderS3:
         """
         ext = os.path.splitext(original_filename)[-1].lower()
         if ext not in self.ALLOWED_EXTENSIONS:
-            raise ValueError(f"Файлы с расширением '{ext}' не поддерживаются.")
+            raise AppExceptionResponse.bad_request(message=f"Файлы с расширением '{ext}' не поддерживаются.")
         unique_name = f"{uuid.uuid4()}{ext}"
         return unique_name
 
-    def upload_document(self, file_path, s3_key_prefix="documents/"):
+    def upload_document(self, file_path, original_filename, s3_key_prefix="documents/"):
         """
         Загружает документ в S3 и возвращает уникальный ключ.
         """
         try:
             filename = os.path.basename(file_path)
-            unique_filename = self._generate_unique_filename(filename)
+            unique_filename = self._generate_unique_filename(original_filename)
             s3_key = f"{s3_key_prefix}{unique_filename}"
 
             self.s3_client.upload_file(file_path, self.bucket_name, s3_key)
@@ -46,10 +48,10 @@ class DocumentUploaderS3:
 
         except FileNotFoundError:
             print("Ошибка: Локальный файл не найден.")
-            raise
+            raise AppExceptionResponse.not_found(message="Ошибка: Локальный файл не найден.")
         except ClientError as e:
             print(f"Ошибка S3: {e}")
-            raise
+            raise AppExceptionResponse.not_found(message=f"Ошибка S3: {e}")
 
     def generate_presigned_url(self, s3_key, expiration=3600):
         """
@@ -65,4 +67,4 @@ class DocumentUploaderS3:
             return url
         except ClientError as e:
             print(f"Ошибка при генерации ссылки: {e}")
-            raise
+            raise AppExceptionResponse.internal_error(message=f"Ошибка при генерации ссылки: {e}")

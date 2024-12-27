@@ -2,6 +2,9 @@ from typing import Generic, TypeVar
 
 from pydantic import BaseModel
 
+from app.adapters.dto.course.course_dto import CourseRDTO
+from app.adapters.dto.user.user_dto import UserRDTOWithRelated
+
 T = TypeVar("T")
 
 
@@ -32,3 +35,11 @@ class BasePageModel(BaseModel):
     last_page: int
     total_pages: int
     total_items: int
+
+
+class PaginationCourse(BasePageModel):
+    items: list[CourseRDTO]
+
+
+class PaginationUsers(BasePageModel):
+    items: list[UserRDTOWithRelated]

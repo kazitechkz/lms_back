@@ -1,17 +1,18 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.adapters.dto.course_category.course_category_dto import CourseCategoryRDTO, CourseCategoryCDTO
+from app.adapters.dto.course_category.course_category_dto import CourseCategoryCDTO, \
+    CourseCategoryRDTOWithRelated
 from app.adapters.repositories.course_category.course_category_repository import CourseCategoryRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
 
 
-class UpdateCourseCategoryCase(BaseUseCase[CourseCategoryRDTO]):
+class UpdateCourseCategoryCase(BaseUseCase[CourseCategoryRDTOWithRelated]):
     def __init__(self, db: AsyncSession):
         self.course_category_repository = CourseCategoryRepository(db)
 
-    async def execute(self, id: int, dto: CourseCategoryCDTO) -> CourseCategoryRDTO:
+    async def execute(self, id: int, dto: CourseCategoryCDTO) -> CourseCategoryRDTOWithRelated:
         obj = await self.validate(repository=self.course_category_repository, cat_id=id, dto=dto)
         data = await self.course_category_repository.update(
             obj=obj, dto=dto,
@@ -20,7 +21,7 @@ class UpdateCourseCategoryCase(BaseUseCase[CourseCategoryRDTO]):
                 selectinload(self.course_category_repository.model.children)
             ]
         )
-        return CourseCategoryRDTO.from_orm_with_depth(data, depth=1)
+        return CourseCategoryRDTOWithRelated.from_orm_with_depth(data, depth=1)
 
     async def validate(self, repository: CourseCategoryRepository, cat_id: int, dto: CourseCategoryCDTO):
         existed = await repository.get(id=cat_id, options=[selectinload(repository.model.children)])
