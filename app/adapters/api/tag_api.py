@@ -2,8 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.tag.tag_dto import TagRDTO, TagCDTO
+from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
+from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.tag.all_tags_case import AllTagsCase
 from app.use_cases.tag.create_tag_case import CreateTagCase
 from app.use_cases.tag.delete_tag_case import DeleteTagCase
@@ -55,21 +57,25 @@ class TagApi:
             description="Удаление роли по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, db: AsyncSession = Depends(get_db)):
+    async def get_all(self, db: AsyncSession = Depends(get_db),
+                      user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))):
         use_case = AllTagsCase(db)
         return await use_case.execute()
 
-    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))):
         use_case = GetTagCase(db)
         return await use_case.execute(tag_id=id)
 
     async def get_by_value(
-        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db)
+        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))
     ):
         use_case = GetTagByValueCase(db)
         return await use_case.execute(tag_value=value)
 
-    async def create(self, dto: TagCDTO, db: AsyncSession = Depends(get_db)):
+    async def create(self, dto: TagCDTO, db: AsyncSession = Depends(get_db),
+                     user=Depends(permission_dependency(PermissionConstants.CREATE_ROLE_VALUE))):
         use_case = CreateTagCase(db)
         return await use_case.execute(dto=dto)
 
@@ -78,6 +84,7 @@ class TagApi:
         id: PathConstants.IDPath,
         dto: TagCDTO,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.UPDATE_ROLE_VALUE))
     ):
         use_case = UpdateTagCase(db)
         return await use_case.execute(id=id, dto=dto)
@@ -86,6 +93,7 @@ class TagApi:
         self,
         id: PathConstants.IDPath,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.DELETE_ROLE_VALUE))
     ):
         use_case = DeleteTagCase(db)
         return await use_case.execute(id=id)

@@ -11,7 +11,7 @@ from starlette import status
 
 from app.adapters.dto.user.user_dto import UserRDTOWithRelated
 from app.core.app_exception_response import AppExceptionResponse
-from app.entities import UserModel
+from app.entities import UserModel, RoleModel, RolePermissionModel
 from app.infrastructure.config import app_config
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import AppDbValueConstants
@@ -53,19 +53,43 @@ def create_refresh_token(data: int):
     return encoded_jwt
 
 
-def verify_token(token_type: str, token: str = Depends(oauth2_scheme)) -> dict:
+def verify_token(token: str = Depends(oauth2_scheme)) -> dict:
     try:
         decoded_data = jwt.decode(
             token, app_config.secret_key, algorithms=[app_config.algorithm]
         )
-        if decoded_data.get("type") != token_type:
-            raise AppExceptionResponse.forbidden(
-                message=f"Недопустимый токен для {token_type}",
+        # Проверяем, что это именно Access Token, а не Refresh Token
+        if decoded_data.get("type") != "access":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Недопустимый токен для доступа к ресурсу",
             )
         return decoded_data
     except jwt.JWTError as jwtError:
-        raise AppExceptionResponse.unauthorized(
-            message=f"Не удалось проверить токен: {jwtError!s}",
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Не удалось проверить токен {jwtError!s}",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+def verify_refresh_token(token: str = Depends(oauth2_scheme)) -> dict:
+    try:
+        decoded_data = jwt.decode(
+            token, app_config.secret_key, algorithms=[app_config.algorithm]
+        )
+        # Проверяем, что это именно Refresh Token
+        if decoded_data.get("type") != "refresh":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Недопустимый токен для обновления",
+            )
+        return decoded_data
+    except jwt.JWTError as jwtError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Не удалось проверить токен {jwtError!s}",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
 
@@ -102,7 +126,9 @@ async def get_current_user(
     query = (
         select(UserModel)
         .options(
-            selectinload(UserModel.role),
+            selectinload(UserModel.role)
+                .selectinload(RoleModel.role_permissions)
+                .selectinload(RolePermissionModel.permission),
             selectinload(UserModel.user_type),
             selectinload(UserModel.file),
         )
@@ -111,57 +137,30 @@ async def get_current_user(
 
     result = await db.execute(query)
     user = result.scalars().first()
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Пользователь не найден",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
     # Преобразование ORM-модели в DTO
     return UserRDTOWithRelated.from_orm(user)
 
 
-def check_admin(current_user: UserRDTOWithRelated = Depends(get_current_user)):
-    if current_user.role.value != AppDbValueConstants.ADMINISTRATOR_VALUE:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Отказано в доступе",
-        )
-    return current_user
+def permission_dependency(required_permission: str):
+    """
+    Фабрика для создания зависимости проверки разрешений.
+    """
+    async def dependency(current_user: UserRDTOWithRelated = Depends(get_current_user)):
+        user_permissions = {rp.permission.value for rp in current_user.role.role_permissions}
 
+        # Проверяем наличие требуемого разрешения
+        if required_permission not in user_permissions:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Отказано в доступе: недостаточно прав",
+            )
+        return current_user
 
-def check_moderator(current_user: UserRDTOWithRelated = Depends(get_current_user)):
-    if current_user.role.value != AppDbValueConstants.MODERATOR_VALUE:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Отказано в доступе",
-        )
-    return current_user
-
-
-def check_company_lead(current_user: UserRDTOWithRelated = Depends(get_current_user)):
-    if current_user.role.value != AppDbValueConstants.COMPANY_LEAD_VALUE:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Отказано в доступе",
-        )
-    return current_user
-
-
-def check_company_manager(current_user: UserRDTOWithRelated = Depends(get_current_user)):
-    if current_user.role.value != AppDbValueConstants.COMPANY_MANAGER_VALUE:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Отказано в доступе",
-        )
-    return current_user
-
-
-def check_employee(current_user: UserRDTOWithRelated = Depends(get_current_user)):
-    if current_user.role.value != AppDbValueConstants.EMPLOYEE_VALUE:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Отказано в доступе",
-        )
-    return current_user
+    return dependency

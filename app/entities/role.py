@@ -24,6 +24,7 @@ class RoleModel(Base):
             AppTableNames.RolePermissionModelName,
             back_populates="role",
             cascade="all, delete-orphan",
+            lazy="noload"
         )
     )
     users: Mapped[List[AppTableNames.UserModelName]] = relationship(

@@ -4,14 +4,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTO
 from app.adapters.dto.pagination_dto import PaginationCourse
 from app.adapters.filters.course.course_filter import CourseFilter
+from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
+from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.course.all_courses_case import AllCoursesCase
 from app.use_cases.course.create_course_case import CreateCourseCase
 from app.use_cases.course.delete_course_case import DeleteCourseCase
 from app.use_cases.course.get_course_case import GetCourseCase
 from app.use_cases.course.update_course_case import UpdateCourseCase
-from app.use_cases.course_category.get_course_category_case import GetCourseCategoryCase
 
 
 class CourseApi:
@@ -51,15 +52,18 @@ class CourseApi:
             description="Удаление курса по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, db: AsyncSession = Depends(get_db), params: CourseFilter = Depends()):
+    async def get_all(self, db: AsyncSession = Depends(get_db), params: CourseFilter = Depends(),
+                      user=Depends(permission_dependency(PermissionConstants.READ_COURSE_VALUE))):
         use_case = AllCoursesCase(db=db, params=params)
         return await use_case.execute()
 
-    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_COURSE_VALUE))):
         use_case = GetCourseCase(db)
         return await use_case.execute(course_id=id)
 
-    async def create(self, dto: CourseCDTO, db: AsyncSession = Depends(get_db)):
+    async def create(self, dto: CourseCDTO, db: AsyncSession = Depends(get_db),
+                     user=Depends(permission_dependency(PermissionConstants.CREATE_COURSE_VALUE))):
         use_case = CreateCourseCase(db)
         return await use_case.execute(dto=dto)
 
@@ -68,6 +72,7 @@ class CourseApi:
         id: PathConstants.IDPath,
         dto: CourseCDTO,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.UPDATE_COURSE_VALUE))
     ):
         use_case = UpdateCourseCase(db)
         return await use_case.execute(id=id, dto=dto)
@@ -76,6 +81,7 @@ class CourseApi:
         self,
         id: PathConstants.IDPath,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.DELETE_COURSE_VALUE))
     ):
         use_case = DeleteCourseCase(db)
         return await use_case.execute(id=id)

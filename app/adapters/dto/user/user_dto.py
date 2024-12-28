@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr
 
 from app.adapters.dto.file.file_dto import FileRDTO
-from app.adapters.dto.role.role_dto import RoleRDTO
+from app.adapters.dto.role.role_dto import RoleRDTOWithRelated
 from app.adapters.dto.user_type.user_type_dto import UserTypeRDTO
 from app.infrastructure.db_constants import DTOConstant, FieldConstants
 
@@ -48,7 +48,7 @@ class UserCDTO(BaseModel):
 
 
 class UserRDTOWithRelated(UserRDTO):
-    role: RoleRDTO
+    role: RoleRDTOWithRelated
     user_type: UserTypeRDTO
     file: FileRDTO | None = None
 

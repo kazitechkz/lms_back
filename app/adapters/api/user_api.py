@@ -1,19 +1,20 @@
-from fastapi import APIRouter, Depends
+from typing import Optional
+
+from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.pagination_dto import PaginationUsers
-from app.adapters.dto.tag.tag_dto import TagRDTO, TagCDTO
-from app.adapters.dto.user.user_dto import UserRDTOWithRelated
+from app.adapters.dto.user.user_dto import UserRDTOWithRelated, UserCDTO
 from app.adapters.filters.users.user_filter import UserFilter
+from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
-from app.use_cases.tag.all_tags_case import AllTagsCase
-from app.use_cases.tag.create_tag_case import CreateTagCase
-from app.use_cases.tag.delete_tag_case import DeleteTagCase
-from app.use_cases.tag.get_tag_by_value_case import GetTagByValueCase
-from app.use_cases.tag.get_tag_case import GetTagCase
-from app.use_cases.tag.update_tag_case import UpdateTagCase
+from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.user.all_users_case import AllUsersCase
+from app.use_cases.user.create_user_case import CreateUserCase
+from app.use_cases.user.delete_user_case import DeleteUserCase
+from app.use_cases.user.get_user_case import GetUserCase
+from app.use_cases.user.update_user_case import UpdateUserCase
 
 
 class UserApi:
@@ -53,31 +54,38 @@ class UserApi:
             description="Удаление пользователя по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, params: UserFilter = Depends(), db: AsyncSession = Depends(get_db)):
+    async def get_all(self, params: UserFilter = Depends(), db: AsyncSession = Depends(get_db),
+                      user=Depends(permission_dependency(PermissionConstants.READ_USER_VALUE))):
         use_case = AllUsersCase(db)
         return await use_case.execute(params=params)
 
-    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
-        use_case = GetTagCase(db)
-        return await use_case.execute(tag_id=id)
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_USER_VALUE))):
+        use_case = GetUserCase(db)
+        return await use_case.execute(user_id=id)
 
-    async def create(self, dto: TagCDTO, db: AsyncSession = Depends(get_db)):
-        use_case = CreateTagCase(db)
-        return await use_case.execute(dto=dto)
+    async def create(self, dto: UserCDTO = Depends(), db: AsyncSession = Depends(get_db),
+                     file: UploadFile | None = File(default=None, description="Ава"),
+                     user=Depends(permission_dependency(PermissionConstants.CREATE_USER_VALUE))):
+        use_case = CreateUserCase(db)
+        return await use_case.execute(dto=dto, file=file, userDTO=user)
 
     async def update(
         self,
         id: PathConstants.IDPath,
-        dto: TagCDTO,
+        dto: UserCDTO = Depends(),
         db: AsyncSession = Depends(get_db),
+        file: Optional[UploadFile] = File(default=None, description="Ава"),
+        user=Depends(permission_dependency(PermissionConstants.UPDATE_USER_VALUE))
     ):
-        use_case = UpdateTagCase(db)
-        return await use_case.execute(id=id, dto=dto)
+        use_case = UpdateUserCase(db)
+        return await use_case.execute(id=id, dto=dto, file=file, userDTO=user)
 
     async def delete(
         self,
         id: PathConstants.IDPath,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.DELETE_USER_VALUE))
     ):
-        use_case = DeleteTagCase(db)
+        use_case = DeleteUserCase(db)
         return await use_case.execute(id=id)

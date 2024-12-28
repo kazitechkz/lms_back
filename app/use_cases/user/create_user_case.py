@@ -2,6 +2,7 @@ from typing import Optional
 
 from fastapi import File
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from app.adapters.dto.user.user_dto import UserCDTO, UserRDTOWithRelated
 from app.adapters.repositories.role.role_repository import RoleRepository
@@ -21,17 +22,20 @@ class CreateUserCase(BaseUseCase[UserRDTOWithRelated]):
 
     async def execute(self, dto: UserCDTO, userDTO: UserRDTOWithRelated, file: Optional[File] = None):
         obj = await self.validate(dto=dto, userDTO=userDTO, file=file)
-        data = await self.repo.create(obj=obj)
+        data = await self.repo.create(obj=obj, options=[
+                joinedload(self.repo.model.user_type),
+                joinedload(self.repo.model.role),
+                joinedload(self.repo.model.file),
+            ])
         return UserRDTOWithRelated.from_orm(data)
 
     async def validate(self, dto: UserCDTO, userDTO: UserRDTOWithRelated, file: Optional[File] = None):
-        if await self.user_type_repo.get(id=dto.user_type_id):
+        if await self.user_type_repo.get(id=dto.user_type_id) is None:
             raise AppExceptionResponse.not_found(message="Тип пользователя не найден")
-        if await self.role_repo.get(id=dto.role_id):
+        if await self.role_repo.get(id=dto.role_id) is None:
             raise AppExceptionResponse.not_found(message="Такой роли не существует")
         if file is not None:
             file = await self.file_use_case.execute(file=file, userDTO=userDTO, upload_path="avatars/")
             dto.file_id = file.id
-        print(f"dto: {dto}")
-        breakpoint()
+
         return self.repo.model(**dto.dict())

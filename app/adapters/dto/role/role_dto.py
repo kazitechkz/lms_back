@@ -1,5 +1,8 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
+from app.adapters.dto.role_permission.role_permission_dto import RolePermissionRDTOWithRelated
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -40,3 +43,13 @@ class RoleCDTO(BaseModel):
     is_admin: bool = Field(
         default=False, description="Является ли роль административной"
     )
+
+    class Config:
+        from_attributes = True
+
+
+class RoleRDTOWithRelated(RoleRDTO):
+    role_permissions: Optional[list[RolePermissionRDTOWithRelated]]
+
+    class Config:
+        from_attributes = True

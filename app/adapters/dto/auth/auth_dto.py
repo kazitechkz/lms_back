@@ -21,6 +21,7 @@ class AuthCDTO(BaseModel):
 class AuthRDTO(BaseModel):
     access_token: DTOConstant.StandardVarchar
     refresh_token: DTOConstant.StandardVarchar
+    token_type: DTOConstant.StandardVarchar
 
     class Config:
         from_attributes = True

@@ -2,16 +2,16 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.permission.permission_dto import PermissionRDTO, PermissionCDTO
+from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
+from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.permission.all_permission_case import AllPermissionCase
 from app.use_cases.permission.create_permission_case import CreatePermissionCase
 from app.use_cases.permission.delete_permission_case import DeletePermissionCase
 from app.use_cases.permission.get_permission_by_value_case import GetPermissionByValueCase
 from app.use_cases.permission.get_permission_case import GetPermissionCase
 from app.use_cases.permission.update_permission_case import UpdatePermissionCase
-from app.use_cases.role.delete_role_case import DeleteRoleCase
-from app.use_cases.role.update_role_case import UpdateRoleCase
 
 
 class PermissionApi:
@@ -57,21 +57,25 @@ class PermissionApi:
             description="Удаление право по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, db: AsyncSession = Depends(get_db)):
+    async def get_all(self, db: AsyncSession = Depends(get_db),
+                      user=Depends(permission_dependency(PermissionConstants.READ_PERMISSION_VALUE))):
         use_case = AllPermissionCase(db)
         return await use_case.execute()
 
-    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_PERMISSION_VALUE))):
         use_case = GetPermissionCase(db)
         return await use_case.execute(permission_id=id)
 
     async def get_by_value(
-        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db)
+        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.READ_PERMISSION_VALUE))
     ):
         use_case = GetPermissionByValueCase(db)
         return await use_case.execute(permission_value=value)
 
-    async def create(self, dto: PermissionCDTO, db: AsyncSession = Depends(get_db)):
+    async def create(self, dto: PermissionCDTO, db: AsyncSession = Depends(get_db),
+                     user=Depends(permission_dependency(PermissionConstants.CREATE_PERMISSION_VALUE))):
         use_case = CreatePermissionCase(db)
         return await use_case.execute(dto=dto)
 
@@ -80,6 +84,7 @@ class PermissionApi:
         id: PathConstants.IDPath,
         dto: PermissionCDTO,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.UPDATE_PERMISSION_VALUE))
     ):
         use_case = UpdatePermissionCase(db)
         return await use_case.execute(id=id, dto=dto)
@@ -88,6 +93,7 @@ class PermissionApi:
         self,
         id: PathConstants.IDPath,
         db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.DELETE_PERMISSION_VALUE))
     ):
         use_case = DeletePermissionCase(db)
         return await use_case.execute(id=id)

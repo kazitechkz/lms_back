@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, Path
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.role.role_dto import RoleCDTO, RoleRDTO
-from app.core.auth_core import get_current_user
+from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
+from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.role.all_roles_case import AllRolesCase
 from app.use_cases.role.create_role_case import CreateRoleCase
 from app.use_cases.role.delete_role_case import DeleteRoleCase
@@ -23,7 +24,7 @@ class RoleApi:
             "/",
             response_model=list[RoleRDTO],
             summary="Список ролей",
-            description="Получение списка ролей",
+            description="Получение списка ролей"
         )(self.get_all)
         self.router.get(
             "/get/{id}",
@@ -56,21 +57,25 @@ class RoleApi:
             description="Удаление роли по уникальному идентификатору",
         )(self.delete)
 
-    async def get_all(self, db: AsyncSession = Depends(get_db), current_user=Depends(get_current_user)):
+    async def get_all(self, db: AsyncSession = Depends(get_db),
+                      user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))):
         use_case = AllRolesCase(db)
         return await use_case.execute()
 
-    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db)):
+    async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))):
         use_case = GetRoleCase(db)
         return await use_case.execute(role_id=id)
 
     async def get_by_value(
-        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db)
+        self, value: PathConstants.ValuePath, db: AsyncSession = Depends(get_db),
+            user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))
     ):
         use_case = GetRoleByValueCase(db)
         return await use_case.execute(role_value=value)
 
-    async def create(self, dto: RoleCDTO, db: AsyncSession = Depends(get_db)):
+    async def create(self, dto: RoleCDTO, db: AsyncSession = Depends(get_db),
+                     user=Depends(permission_dependency(PermissionConstants.CREATE_ROLE_VALUE))):
         use_case = CreateRoleCase(db)
         return await use_case.execute(dto=dto)
 
@@ -79,6 +84,7 @@ class RoleApi:
         id: PathConstants.IDPath,
         dto: RoleCDTO,
         db: AsyncSession = Depends(get_db),
+        user=Depends(permission_dependency(PermissionConstants.UPDATE_ROLE_VALUE))
     ):
         use_case = UpdateRoleCase(db)
         return await use_case.execute(id=id, dto=dto)
@@ -87,6 +93,7 @@ class RoleApi:
         self,
         id: PathConstants.IDPath,
         db: AsyncSession = Depends(get_db),
+        user=Depends(permission_dependency(PermissionConstants.DELETE_ROLE_VALUE))
     ):
         use_case = DeleteRoleCase(db)
         return await use_case.execute(id=id)
