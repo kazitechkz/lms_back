@@ -3,14 +3,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.adapters.repositories.course.course_repository import CourseRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
+from app.use_cases.course_tag.delete_course_tag_case import DeleteCourseTagCase
 
 
 class DeleteCourseCase(BaseUseCase[bool]):
     def __init__(self, db: AsyncSession):
         self.repository = CourseRepository(db)
+        self.delete_course_tag_use_case = DeleteCourseTagCase(db)
 
     async def execute(self, id: int) -> bool:
         await self.validate(id=id)
+        await self.delete_course_tag_use_case.execute(id)
         data = await self.repository.delete(id=id)
         return data
 

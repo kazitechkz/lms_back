@@ -7,59 +7,41 @@ from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
 class CourseModel(Base):
     __tablename__ = AppTableNames.CourseTableName
     id: Mapped[ColumnConstants.ID]
-    title_ru: Mapped[ColumnConstants.StandardVarchar]
-    title_kk: Mapped[ColumnConstants.StandardVarchar]
-    title_en: Mapped[ColumnConstants.StandardNullableVarchar]
-    short_description_kk: Mapped[ColumnConstants.StandardText]
-    short_description_ru: Mapped[ColumnConstants.StandardText]
-    short_description_en: Mapped[ColumnConstants.StandardNullableText]
-    description_kk: Mapped[ColumnConstants.StandardText]
-    description_ru: Mapped[ColumnConstants.StandardText]
-    description_en: Mapped[ColumnConstants.StandardNullableText]
-    learned_after_course_kk: Mapped[ColumnConstants.StandardText]
-    learned_after_course_ru: Mapped[ColumnConstants.StandardText]
-    learned_after_course_en: Mapped[ColumnConstants.StandardNullableText]
+    title: Mapped[ColumnConstants.StandardVarchar]
+    short_description: Mapped[ColumnConstants.StandardNullableText]
+    description: Mapped[ColumnConstants.StandardText]
+    learned: Mapped[ColumnConstants.StandardText]
     price: Mapped[ColumnConstants.StandardInteger]
     thumbnail: Mapped[ColumnConstants.StandardNullableVarchar]
     author: Mapped[ColumnConstants.StandardNullableVarchar]
 
+    lang_id: Mapped[ColumnConstants.ForeignKeyInteger(
+        table_name=AppTableNames.LanguageTableName,
+        onupdate="CASCADE",
+        ondelete="SET NULL"
+    )]
     category_id: Mapped[ColumnConstants.ForeignKeyInteger(
         table_name=AppTableNames.CourseCategoryTableName,
         onupdate="CASCADE",
-        ondelete="CASCADE"
+        ondelete="SET NULL"
     )]
     type_id: Mapped[ColumnConstants.ForeignKeyInteger(
         table_name=AppTableNames.CourseTypeTableName,
         onupdate="CASCADE",
-        ondelete="CASCADE"
+        ondelete="SET NULL"
     )]
 
-    category: Mapped["CourseCategoryModel"] = relationship("CourseCategoryModel")
-    type: Mapped["CourseTypeModel"] = relationship("CourseTypeModel")
+    category: Mapped[AppTableNames.CourseCategoryModelName] = relationship(AppTableNames.CourseCategoryModelName)
+    type: Mapped[AppTableNames.CourseTypeModelName] = relationship(AppTableNames.CourseTypeModelName)
+    lang: Mapped[AppTableNames.LanguageModelName] = relationship(AppTableNames.LanguageModelName)
 
+    tags: Mapped[list[AppTableNames.CourseTagModelName]] = relationship(
+        f"{AppTableNames.CourseTagModelName}",
+        )
     # materials: Mapped[list["MaterialModel"]] = relationship(
     #     f"{AppTableNames.MaterialModelName}",
     #     back_populates="parent"
     # )
-
-    created_at: Mapped[ColumnConstants.CreatedAt]
-    updated_at: Mapped[ColumnConstants.UpdatedAt]
-
-
-class CourseTagModel(Base):
-    __tablename__ = AppTableNames.CourseTagTableName
-    id: Mapped[ColumnConstants.ID]
-
-    course_id: Mapped[ColumnConstants.ForeignKeyInteger(
-        table_name=AppTableNames.CourseTableName,
-        onupdate="CASCADE",
-        ondelete="CASCADE"
-    )]
-    tag_id: Mapped[ColumnConstants.ForeignKeyInteger(
-        table_name=AppTableNames.TagTableName,
-        onupdate="CASCADE",
-        ondelete="CASCADE"
-    )]
 
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]

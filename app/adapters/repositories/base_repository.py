@@ -147,6 +147,12 @@ class BaseRepository(Generic[T]):
         deleted_obj = await self.get(id)
         return deleted_obj is None
 
+    async def delete_with_ids(self, ids: list[int]):
+        await self.db.execute(
+            delete(self.model).where(self.model.id.in_(ids))
+        )
+        await self.db.commit()
+
     def _parse_integrity_error(self, error: IntegrityError) -> str:
         """Парсинг ошибок уникальности."""
         orig_msg = str(error.orig)

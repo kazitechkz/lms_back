@@ -21,23 +21,17 @@ def upgrade() -> None:
     op.create_table(
         "courses",
         sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column('lang_id', sa.Integer(), nullable=False),
         sa.Column('category_id', sa.Integer(), nullable=False),
         sa.Column('type_id', sa.Integer(), nullable=False),
-        sa.Column("title_ru", sa.String(length=256), nullable=False),
-        sa.Column("title_kk", sa.String(length=256), nullable=False),
-        sa.Column("title_en", sa.String(length=256), nullable=True),
-        sa.Column("short_description_kk", sa.Text(), nullable=False),
-        sa.Column("short_description_ru", sa.Text(), nullable=False),
-        sa.Column("short_description_en", sa.Text(), nullable=True),
-        sa.Column("description_kk", sa.Text(), nullable=False),
-        sa.Column("description_ru", sa.Text(), nullable=False),
-        sa.Column("description_en", sa.Text(), nullable=True),
-        sa.Column("learned_after_course_kk", sa.Text(), nullable=False),
-        sa.Column("learned_after_course_ru", sa.Text(), nullable=False),
-        sa.Column("learned_after_course_en", sa.Text(), nullable=True),
+        sa.Column("title", sa.String(length=256), nullable=False),
+        sa.Column("short_description", sa.Text(), nullable=True),
+        sa.Column("description", sa.Text(), nullable=False),
+        sa.Column("learned", sa.Text(), nullable=False),
         sa.Column("price", sa.Integer(), nullable=False),
         sa.Column("thumbnail", sa.String(length=256), nullable=True),
         sa.Column("author", sa.String(length=256), nullable=True),
+        sa.ForeignKeyConstraint(['lang_id'], ['languages.id'], onupdate='cascade', ondelete='cascade'),
         sa.ForeignKeyConstraint(['category_id'], ['course_categories.id'], onupdate='cascade', ondelete='cascade'),
         sa.ForeignKeyConstraint(['type_id'], ['course_types.id'], onupdate='cascade', ondelete='cascade'),
         sa.Column(
@@ -54,11 +48,13 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_index(op.f('ix_courses_lang_id'), 'courses', ['lang_id'], unique=False)
     op.create_index(op.f('ix_courses_category_id'), 'courses', ['category_id'], unique=False)
     op.create_index(op.f('ix_courses_type_id'), 'courses', ['type_id'], unique=False)
 
 
 def downgrade() -> None:
+    op.drop_index(op.f('ix_courses_lang_id'), table_name='courses')
     op.drop_index(op.f('ix_courses_category_id'), table_name='courses')
     op.drop_index(op.f('ix_courses_type_id'), table_name='courses')
-    op.drop_table("tags")
+    op.drop_table("courses")

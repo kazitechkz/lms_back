@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTO
+from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTO, CourseRDTOWithRelated
 from app.adapters.dto.pagination_dto import PaginationCourse
 from app.adapters.filters.course.course_filter import CourseFilter
 from app.core.auth_core import permission_dependency
@@ -29,13 +29,13 @@ class CourseApi:
         )(self.get_all)
         self.router.get(
             "/get/{id}",
-            response_model=CourseRDTO,
+            response_model=CourseRDTOWithRelated,
             summary="Получить курс по уникальному ID",
             description="Получение курса по уникальному идентификатору",
         )(self.get)
         self.router.post(
             "/create",
-            response_model=bool,
+            response_model=CourseRDTO,
             summary="Создать курс",
             description="Создание курса",
         )(self.create)
