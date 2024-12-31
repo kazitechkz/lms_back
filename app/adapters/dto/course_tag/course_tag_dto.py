@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 from app.adapters.dto.tag.tag_dto import TagRDTO
@@ -29,4 +31,4 @@ class CourseTagCDTO(BaseModel):
 
 
 class CourseTagRDTOWithRelated(CourseTagRDTO):
-    tag: TagRDTO
+    tag: Optional[TagRDTO]

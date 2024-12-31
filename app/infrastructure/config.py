@@ -38,6 +38,12 @@ class AppConfiguration(BaseSettings):
     aws_region_name: str = Field(..., env="AWS_REGION_NAME")
     aws_s3_bucket_name: str = Field(..., env="AWS_S3_BUCKET_NAME")
 
+    google_client_id: str = Field(..., env="GOOGLE_CLIENT_ID")
+    google_secret: str = Field(..., env="GOOGLE_SECRET")
+
+    youtube_access_token: str = Field(..., env="YOUTUBE_ACCESS_TOKEN")
+    youtube_refresh_token: str = Field(..., env="YOUTUBE_REFRESH_TOKEN")
+
     static_folder: str = "static"
 
     @property

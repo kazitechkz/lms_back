@@ -23,7 +23,7 @@ class CourseRDTO(CourseDTO):
     description: DTOConstant.StandardText
     learned: DTOConstant.StandardText
     price: int = Field(default=None, description="Стоимость курса")
-    thumbnail: DTOConstant.StandardValue
+    thumbnail: str | None = Field(default=None, description="Обложка курса")
     author: DTOConstant.StandardValue
     type_id: int = Field(default=None, description="Уникальный ID типа курса")
     category_id: int = Field(default=None, description="Уникальный ID категории курса")
@@ -42,7 +42,7 @@ class CourseCDTO(BaseModel):
     description: DTOConstant.StandardText
     learned: DTOConstant.StandardText
     price: int = Field(default=None, description="Стоимость курса")
-    thumbnail: Optional[DTOConstant.StandardValue]
+    thumbnail: str | None = Field(default=None, description="Обложка курса")
     author: Optional[DTOConstant.StandardValue]
     type_id: int = Field(default=None, description="Уникальный ID типа курса")
     category_id: int = Field(default=None, description="Уникальный ID категории курса")

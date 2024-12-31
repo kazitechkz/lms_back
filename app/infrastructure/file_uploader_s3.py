@@ -1,5 +1,6 @@
 import os
 import uuid
+from urllib.parse import urlparse
 
 import boto3
 from botocore.exceptions import ClientError
@@ -52,6 +53,35 @@ class DocumentUploaderS3:
         except ClientError as e:
             print(f"Ошибка S3: {e}")
             raise AppExceptionResponse.not_found(message=f"Ошибка S3: {e}")
+
+    def delete_document(self, s3_key):
+        """
+        Удаляет документ из S3 по указанному ключу.
+        """
+        try:
+            self.s3_client.delete_object(Bucket=self.bucket_name, Key=s3_key)
+            print(f"Файл с ключом '{s3_key}' успешно удалён из '{self.bucket_name}'.")
+            return {"message": f"Файл '{s3_key}' успешно удалён."}
+        except ClientError as e:
+            print(f"Ошибка при удалении файла: {e}")
+            raise AppExceptionResponse.internal_error(message=f"Ошибка при удалении файла: {e}")
+
+    def delete_document_by_url(self, file_url: str):
+        """
+        Удаляет документ из S3, используя полный URL.
+        """
+        try:
+            # Парсим URL, чтобы извлечь ключ объекта
+            parsed_url = urlparse(file_url)
+            s3_key = parsed_url.path.lstrip("/")  # Убираем начальный слеш
+
+            # Удаляем объект из S3
+            self.s3_client.delete_object(Bucket=self.bucket_name, Key=s3_key)
+            print(f"Файл с ключом '{s3_key}' успешно удалён из '{self.bucket_name}'.")
+            return {"message": f"Файл '{s3_key}' успешно удалён."}
+        except ClientError as e:
+            print(f"Ошибка при удалении файла: {e}")
+            raise AppExceptionResponse.internal_error(message=f"Ошибка при удалении файла: {e}")
 
     def generate_presigned_url(self, s3_key, expiration=3600):
         """

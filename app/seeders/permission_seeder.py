@@ -1,8 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.entities import PermissionModel
-from app.entities.language import LanguageModel
-from app.infrastructure.db_constants import AppDbValueConstants, AppTableNames
+from app.infrastructure.db_constants import AppTableNames
 from app.infrastructure.permission_constants import PermissionConstants
 from app.seeders.base_seeder import BaseSeeder
 
@@ -212,6 +211,34 @@ class PermissionSeeder(BaseSeeder):
                 title_en="Delete user",
                 description="Delete user",
                 value=PermissionConstants.DELETE_USER_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурсты оқу",
+                title_ru="Чтение видеокурса",
+                title_en="Read video course",
+                description="Read video course",
+                value=PermissionConstants.READ_VIDEO_COURSE_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурсты жасау",
+                title_ru="Создание видеокурса",
+                title_en="Create video course",
+                description="Create video course",
+                value=PermissionConstants.CREATE_VIDEO_COURSE_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурсты жаңарту",
+                title_ru="Обновление видеокурса",
+                title_en="Update video course",
+                description="Update video course",
+                value=PermissionConstants.UPDATE_VIDEO_COURSE_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурсты жою",
+                title_ru="Удаление видеокурса",
+                title_en="Delete video course",
+                description="Delete video course",
+                value=PermissionConstants.DELETE_VIDEO_COURSE_VALUE
             )
         ]
 

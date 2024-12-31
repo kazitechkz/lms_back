@@ -29,7 +29,7 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=False),
         sa.Column("learned", sa.Text(), nullable=False),
         sa.Column("price", sa.Integer(), nullable=False),
-        sa.Column("thumbnail", sa.String(length=256), nullable=True),
+        sa.Column("thumbnail", sa.Text(), nullable=True),
         sa.Column("author", sa.String(length=256), nullable=True),
         sa.ForeignKeyConstraint(['lang_id'], ['languages.id'], onupdate='cascade', ondelete='cascade'),
         sa.ForeignKeyConstraint(['category_id'], ['course_categories.id'], onupdate='cascade', ondelete='cascade'),

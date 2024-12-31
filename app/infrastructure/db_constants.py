@@ -19,7 +19,9 @@ class AppTableNames:
     CourseCategoryTableName = "course_categories"
     CourseTypeTableName = "course_types"
     TagTableName = "tags"
+    TokenTableName = "tokens"
     CourseTableName = "courses"
+    VideoCourseTableName = "video_courses"
     CourseTagTableName = "course_tags"
     CourseMaterialTableName = "course_materials"
     UserTableName = "users"
@@ -35,7 +37,9 @@ class AppTableNames:
     CourseCategoryModelName = "CourseCategoryModel"
     CourseTypeModelName = "CourseTypeModel"
     TagModelName = "TagModel"
+    TokenModelName = "TokenModel"
     CourseModelName = "CourseModel"
+    VideoCourseModelName = "VideoCourseModel"
     CourseTagModelName = "CourseTagModel"
     CourseMaterialModelName = "CourseMaterialModel"
     UserModelName = "UserModel"
@@ -300,6 +304,13 @@ class DTOConstant:
         Field(
             max_length=FieldConstants.STANDARD_LENGTH,
             description="Строковое поле до 256 символов",
+        ),
+    ]
+
+    StandardInteger = Annotated[
+        int,
+        Field(
+            description="Стандартное цифровое поле",
         ),
     ]
 

@@ -10,7 +10,7 @@ class AppExceptionResponse:
 
     @staticmethod
     def create_exception(
-        status_code: int, message: str, extra: dict | None = None
+            status_code: int, message: str, extra: dict | None = None
     ) -> HTTPException:
         """
         Создаёт HTTP-исключение с возможностью добавления дополнительных данных.
@@ -64,10 +64,41 @@ class AppExceptionResponse:
 
     @staticmethod
     def internal_error(
-        message: str = "Internal server error", extra: dict | None = None
+            message: str = "Internal server error", extra: dict | None = None
     ):
         return AppExceptionResponse.create_exception(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             message=message,
             extra=extra,
+        )
+
+    @staticmethod
+    def youtube_api_error(
+            user_code: str,
+            device_code: str,
+            verification_url: str,
+            interval: int,
+            error_code: str = "invalid_grant",
+            description: str = "Token has expired or been revoked.",
+            extra: dict | None = None
+    ):
+        """
+        Обработка ошибок YouTube API с дополнительной информацией.
+        """
+        detail = {
+            "user_code": user_code,
+            "device_code": device_code,
+            "verification_url": verification_url,
+            "interval": interval,
+            "service": "YouTube",
+            "error_code": error_code,
+            "error_description": description,
+        }
+        if extra:
+            detail.update(extra)
+
+        return AppExceptionResponse.create_exception(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            message="YouTube API: Service Error.",
+            extra=detail,
         )

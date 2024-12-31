@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File
+from pydantic import Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTO, CourseRDTOWithRelated
@@ -35,13 +36,13 @@ class CourseApi:
         )(self.get)
         self.router.post(
             "/create",
-            response_model=CourseRDTO,
+            response_model=CourseRDTOWithRelated,
             summary="Создать курс",
             description="Создание курса",
         )(self.create)
         self.router.put(
             "/update/{id}",
-            response_model=CourseRDTO,
+            response_model=CourseRDTOWithRelated,
             summary="Обновить курс по уникальному ID",
             description="Обновление курса по уникальному идентификатору",
         )(self.update)
@@ -62,25 +63,28 @@ class CourseApi:
         use_case = GetCourseCase(db)
         return await use_case.execute(course_id=id)
 
-    async def create(self, dto: CourseCDTO, db: AsyncSession = Depends(get_db),
+    async def create(self, dto: CourseCDTO = Depends(),
+                     db: AsyncSession = Depends(get_db),
+                     thumbnail: UploadFile | None = File(default=None, description="Обложка курса"),
                      user=Depends(permission_dependency(PermissionConstants.CREATE_COURSE_VALUE))):
         use_case = CreateCourseCase(db)
-        return await use_case.execute(dto=dto)
+        return await use_case.execute(dto=dto, file=thumbnail)
 
     async def update(
-        self,
-        id: PathConstants.IDPath,
-        dto: CourseCDTO,
-        db: AsyncSession = Depends(get_db),
+            self,
+            id: PathConstants.IDPath,
+            dto: CourseCDTO = Depends(),
+            thumbnail: UploadFile | None = File(default=None, description="Обложка курса"),
+            db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.UPDATE_COURSE_VALUE))
     ):
         use_case = UpdateCourseCase(db)
-        return await use_case.execute(id=id, dto=dto)
+        return await use_case.execute(id=id, dto=dto, file=thumbnail)
 
     async def delete(
-        self,
-        id: PathConstants.IDPath,
-        db: AsyncSession = Depends(get_db),
+            self,
+            id: PathConstants.IDPath,
+            db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.DELETE_COURSE_VALUE))
     ):
         use_case = DeleteCourseCase(db)

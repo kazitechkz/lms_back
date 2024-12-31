@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from app.adapters.dto.course.course_dto import CourseRDTO, CourseRDTOWithRelated
 from app.adapters.dto.user.user_dto import UserRDTOWithRelated
+from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated
 
 T = TypeVar("T")
 
@@ -43,3 +44,7 @@ class PaginationCourse(BasePageModel):
 
 class PaginationUsers(BasePageModel):
     items: list[UserRDTOWithRelated]
+
+
+class PaginationVideoCourses(BasePageModel):
+    items: list[VideoCourseRDTOWithRelated]

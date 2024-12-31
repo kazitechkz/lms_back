@@ -41,6 +41,12 @@ class PermissionConstants:
     UPDATE_USER_VALUE = "update_user_value"
     DELETE_USER_VALUE = "delete_user_value"
 
+    # user permissions
+    READ_VIDEO_COURSE_VALUE = "read_video_course_value"
+    CREATE_VIDEO_COURSE_VALUE = "create_video_course_value"
+    UPDATE_VIDEO_COURSE_VALUE = "update_video_course_value"
+    DELETE_VIDEO_COURSE_VALUE = "delete_video_course_value"
+
     # PERMISSIONS, которые нельзя удалить или изменить
     IMMUTABLE_ROLES = frozenset(
         [
@@ -72,5 +78,9 @@ class PermissionConstants:
             CREATE_USER_VALUE,
             UPDATE_USER_VALUE,
             DELETE_USER_VALUE,
+            READ_VIDEO_COURSE_VALUE,
+            CREATE_VIDEO_COURSE_VALUE,
+            UPDATE_VIDEO_COURSE_VALUE,
+            DELETE_VIDEO_COURSE_VALUE,
         ]
     )

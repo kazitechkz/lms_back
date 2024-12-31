@@ -1,4 +1,6 @@
-from sqlalchemy.orm import Mapped, relationship
+from typing import Optional
+
+from sqlalchemy.orm import Mapped, relationship, mapped_column
 
 from app.infrastructure.database import Base
 from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
@@ -12,7 +14,7 @@ class CourseModel(Base):
     description: Mapped[ColumnConstants.StandardText]
     learned: Mapped[ColumnConstants.StandardText]
     price: Mapped[ColumnConstants.StandardInteger]
-    thumbnail: Mapped[ColumnConstants.StandardNullableVarchar]
+    thumbnail: Mapped[str | None] = mapped_column(nullable=True)
     author: Mapped[ColumnConstants.StandardNullableVarchar]
 
     lang_id: Mapped[ColumnConstants.ForeignKeyInteger(
