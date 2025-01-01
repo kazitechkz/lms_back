@@ -4,7 +4,7 @@ from pyyoutube.media import Media
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.config import app_config
-from app.infrastructure.google_service import refresh_access_token, get_tokens
+from app.infrastructure.google_service import refresh_access_token, get_tokens, device_authorization
 from app.use_cases.token.update_token_case import UpdateTokenCase
 
 
@@ -15,6 +15,7 @@ class YoutubeUpload:
         self.refresh_token = refresh_token
 
     async def check_token_validity(self):
+
         """
         Проверка действительности access_token через YouTube API.
         """

@@ -9,6 +9,7 @@ from app.adapters.dto.user.user_dto import UserRDTOWithRelated
 from app.adapters.dto.video_course.video_course_dto import VideoCourseCDTO
 from app.adapters.repositories.file.file_repository import FileRepository
 from app.core.app_exception_response import AppExceptionResponse
+from app.infrastructure.google_service import device_authorization
 from app.infrastructure.video_uploader_youtube import YoutubeUpload
 from app.use_cases.base_case import BaseUseCase
 from app.use_cases.token.get_token_case import GetTokenCase
@@ -22,14 +23,14 @@ class YoutubeUseCase(BaseUseCase[FileRDTO]):
 
     async def execute(self,
                       dto: VideoCourseCDTO,
-                      file: File, userDTO: UserRDTOWithRelated, upload_path: str = "documents/") -> FileRDTO:
-        obj = await self.validate(file=file, userDTO=userDTO, upload_path=upload_path, dto=dto)
+                      file: File, userDTO: UserRDTOWithRelated) -> FileRDTO:
+        obj = await self.validate(file=file, userDTO=userDTO, dto=dto)
         data = await self.file_repository.create(obj=obj)
         return FileRDTO.from_orm(data)
 
     async def validate(self, file: File,
                        dto: VideoCourseCDTO,
-                       userDTO: UserRDTOWithRelated, upload_path: str):
+                       userDTO: UserRDTOWithRelated):
 
         # Создаём временный файл
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:

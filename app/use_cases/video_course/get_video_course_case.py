@@ -1,23 +1,25 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
-from app.adapters.dto.role.role_dto import RoleRDTO
-from app.adapters.dto.tag.tag_dto import TagRDTO
-from app.adapters.repositories.tag.tag_repository import TagRepository
+from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated
+from app.adapters.repositories.video_course.video_course_repository import VideoCourseRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
 
 
-class GetTagCase(BaseUseCase[RoleRDTO]):
+class GetVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
 
     def __init__(self, db: AsyncSession):
-        self.repository = TagRepository(db)
+        self.repository = VideoCourseRepository(db)
 
-    async def execute(self, tag_id: int) -> TagRDTO:
-        tag = await self.validate(tag_id=tag_id)
-        return TagRDTO.from_orm(tag)
+    async def execute(self, video_course_id: int) -> VideoCourseRDTOWithRelated:
+        video_course = await self.validate(video_course_id=video_course_id)
+        return VideoCourseRDTOWithRelated.from_orm(video_course)
 
-    async def validate(self, tag_id: int):
-        tag = await self.repository.get(tag_id)
-        if not tag:
-            raise AppExceptionResponse.not_found("Тег не найден")
-        return tag
+    async def validate(self, video_course_id: int):
+        video_course = await self.repository.get(id=video_course_id, options=[
+            joinedload(self.repository.model.lang)
+        ])
+        if not video_course:
+            raise AppExceptionResponse.not_found("Видеокурс не найден")
+        return video_course

@@ -41,13 +41,13 @@ class CreateVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
         ])
         if video_course is not None:
             raise AppExceptionResponse.bad_request(message="Курс с таким уровнем и языком уже существует")
-        if image is None:
+        if image is None or video is None:
             raise AppExceptionResponse.bad_request(message="Необходимо загрузить обложку и видео")
-        if video:
+        if video is not None:
             video = await self.youtube_video_use_case.execute(
-                dto=dto, file=video, userDTO=user, upload_path="course_videos/")
+                dto=dto, file=video, userDTO=user)
             dto.video_id = video.id
-        if image:
+        if image is not None:
             dto.image = await self.upload_file_use_case.execute(file=image, upload_path="course_images/")
 
         return self.repository.model(**dto.dict())

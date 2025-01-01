@@ -10,7 +10,7 @@ def get_tokens(client_id):
     # Запрос на авторизацию устройства
     payload = {
         "client_id": client_id,
-        "scope": "https://www.googleapis.com/auth/youtube.upload"
+        "scope": "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly"
     }
     response = requests.post(device_auth_url, data=payload)
     if response.status_code != 200:
@@ -73,3 +73,42 @@ def refresh_access_token(client_id, client_secret, refresh_token):
         return token_data["access_token"]
     else:
         raise Exception(f"Ошибка обновления токена: {response.status_code} - {response.text}")
+
+
+def device_authorization(client_id, client_secret):
+    """
+    Авторизация через устройство (Device Authorization Flow).
+    """
+    device_auth_url = "https://oauth2.googleapis.com/device/code"
+    token_url = "https://oauth2.googleapis.com/token"
+
+    # Запрос на авторизацию устройства
+    payload = {
+        "client_id": client_id,
+        "scope": "https://www.googleapis.com/auth/youtube.upload"
+    }
+    response = requests.post(device_auth_url, data=payload)
+    if response.status_code != 200:
+        raise Exception(f"Ошибка получения кода устройства: {response.status_code} - {response.text}")
+
+    device_data = response.json()
+    print("Перейдите по ссылке:", device_data["verification_url"])
+    print("Введите код:", device_data["user_code"])
+
+    # Проверка авторизации пользователя
+    while True:
+        time.sleep(device_data["interval"])
+        token_payload = {
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "device_code": device_data["device_code"],
+            "grant_type": "urn:ietf:params:oauth:grant-type:device_code"
+        }
+        token_response = requests.post(token_url, data=token_payload)
+        if token_response.status_code == 200:
+            print(token_response.json())
+            return token_response.json()["access_token"]
+        elif token_response.json().get("error") == "authorization_pending":
+            print("Ожидание авторизации...")
+        else:
+            raise Exception(f"Ошибка авторизации устройства: {token_response.status_code} - {token_response.text}")

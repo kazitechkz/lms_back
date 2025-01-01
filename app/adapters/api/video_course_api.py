@@ -2,22 +2,16 @@ from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.pagination_dto import PaginationVideoCourses
-from app.adapters.dto.tag.tag_dto import TagRDTO, TagCDTO
-from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated, VideoCourseCDTO, VideoCourseRDTO
+from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated, VideoCourseCDTO
 from app.adapters.filters.video_course.video_course_filter import VideoCourseFilter
 from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
 from app.infrastructure.permission_constants import PermissionConstants
-from app.use_cases.tag.all_tags_case import AllTagsCase
-from app.use_cases.tag.create_tag_case import CreateTagCase
-from app.use_cases.tag.delete_tag_case import DeleteTagCase
-from app.use_cases.tag.get_tag_by_value_case import GetTagByValueCase
-from app.use_cases.tag.get_tag_case import GetTagCase
-from app.use_cases.tag.update_tag_case import UpdateTagCase
 from app.use_cases.video_course.all_video_courses_case import AllVideoCoursesCase
 from app.use_cases.video_course.create_video_course_case import CreateVideoCourseCase
 from app.use_cases.video_course.delete_video_course_case import DeleteVideoCourseCase
+from app.use_cases.video_course.get_video_course_case import GetVideoCourseCase
 from app.use_cases.video_course.update_video_course_case import UpdateVideoCourseCase
 
 
@@ -47,7 +41,7 @@ class VideoCourseApi:
         )(self.create)
         self.router.put(
             "/update/{id}",
-            response_model=VideoCourseRDTO,
+            response_model=VideoCourseRDTOWithRelated,
             summary="Обновить видеокурс по уникальному ID",
             description="Обновление видеокурса по уникальному идентификатору",
         )(self.update)
@@ -65,9 +59,9 @@ class VideoCourseApi:
         return await use_case.execute(params=params)
 
     async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
-                  user=Depends(permission_dependency(PermissionConstants.READ_ROLE_VALUE))):
-        use_case = GetTagCase(db)
-        return await use_case.execute(tag_id=id)
+                  user=Depends(permission_dependency(PermissionConstants.READ_VIDEO_COURSE_VALUE))):
+        use_case = GetVideoCourseCase(db)
+        return await use_case.execute(video_course_id=id)
 
     async def create(self, dto: VideoCourseCDTO = Depends(), db: AsyncSession = Depends(get_db),
                      image: UploadFile = File(default=None, description="Обложка видео"),
@@ -77,19 +71,21 @@ class VideoCourseApi:
         return await use_case.execute(dto=dto, file=image, user=user, video=video)
 
     async def update(
-        self,
-        id: PathConstants.IDPath,
-        dto: VideoCourseCDTO,
-        db: AsyncSession = Depends(get_db),
+            self,
+            id: PathConstants.IDPath,
+            dto: VideoCourseCDTO = Depends(),
+            image: UploadFile | None = File(default=None, description="Обложка видео"),
+            video: UploadFile | None = File(default=None, description="Видео"),
+            db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.UPDATE_VIDEO_COURSE_VALUE))
     ):
         use_case = UpdateVideoCourseCase(db)
-        return await use_case.execute(id=id, dto=dto)
+        return await use_case.execute(id=id, dto=dto, image=image, video=video, user=user)
 
     async def delete(
-        self,
-        id: PathConstants.IDPath,
-        db: AsyncSession = Depends(get_db),
+            self,
+            id: PathConstants.IDPath,
+            db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.DELETE_VIDEO_COURSE_VALUE))
     ):
         use_case = DeleteVideoCourseCase(db)
