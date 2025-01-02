@@ -29,6 +29,8 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=False),
         sa.Column("image", sa.Text(), nullable=False),
         sa.Column("level", sa.Integer(), nullable=False),
+        sa.Column("is_first", sa.Boolean(), nullable=False),
+        sa.Column("is_last", sa.Boolean(), nullable=False),
         sa.ForeignKeyConstraint(['course_id'], ['courses.id'], onupdate='cascade', ondelete='cascade'),
         sa.ForeignKeyConstraint(['video_id'], ['files.id'], onupdate='cascade', ondelete='cascade'),
         sa.ForeignKeyConstraint(['lang_id'], ['languages.id'], onupdate='cascade', ondelete='cascade'),

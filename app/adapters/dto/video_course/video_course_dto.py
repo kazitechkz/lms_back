@@ -20,6 +20,8 @@ class VideoCourseRDTO(VideoCourseDTO):
     image: DTOConstant.StandardText
     description: DTOConstant.StandardText
     level: DTOConstant.StandardInteger
+    is_first: DTOConstant.StandardBoolean
+    is_last: DTOConstant.StandardBoolean
     course_id: DTOConstant.StandardID
     lang_id: DTOConstant.StandardID
     created_at: DTOConstant.StandardCreatedAt
@@ -35,6 +37,8 @@ class VideoCourseCDTO(BaseModel):
     image: str | None = Field(default=None, description="Видео обложка")
     description: DTOConstant.StandardText
     level: DTOConstant.StandardInteger
+    is_first: DTOConstant.StandardBoolean
+    is_last: DTOConstant.StandardBoolean
     course_id: DTOConstant.StandardID
     lang_id: DTOConstant.StandardID
 

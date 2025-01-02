@@ -16,6 +16,8 @@ class VideoCourseModel(Base):
     image: Mapped[ColumnConstants.StandardText]
     description: Mapped[ColumnConstants.StandardText]
     level: Mapped[ColumnConstants.StandardInteger]
+    is_first: Mapped[ColumnConstants.StandardBool]
+    is_last: Mapped[ColumnConstants.StandardBool]
     course_id: Mapped[ColumnConstants.ForeignKeyInteger(
         table_name=AppTableNames.CourseTableName,
         onupdate="CASCADE",

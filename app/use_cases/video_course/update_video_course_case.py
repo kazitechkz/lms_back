@@ -48,10 +48,45 @@ class UpdateVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
             raise AppExceptionResponse.not_found(message="Видеокурс не найден")
         if await self.lang_repository.get(id=dto.lang_id) is None:
             raise AppExceptionResponse.bad_request(message="Язык не найден")
-        video_course = await self.repository.get_first_with_filters(filters=[
-            and_(self.repository.model.level == dto.level)
+        existing_video_course = await self.repository.get_first_with_filters(filters=[
+            and_(
+                self.repository.model.level == dto.level,
+                self.repository.model.lang_id == dto.lang_id,
+                self.repository.model.id != id  # Исключаем текущую запись
+            )
         ])
-        if video_course and video_course.id != id:
-            raise AppExceptionResponse.bad_request(message="Курс с таким уровнем уже существует")
+        if existing_video_course is not None:
+            raise AppExceptionResponse.bad_request(message="Курс с таким уровнем и языком уже существует")
+
+        # Проверка наличия вводного видео
+        if dto.is_first:
+            first_video_course = await self.repository.get_first_with_filters(filters=[
+                and_(
+                    self.repository.model.is_first.is_(True),
+                    self.repository.model.is_last.is_(False),
+                    self.repository.model.id != id  # Исключаем текущую запись
+                )
+            ])
+            if first_video_course is not None:
+                raise AppExceptionResponse.bad_request(
+                    message="Невозможно создать два вводных видео, так как в курсе уже имеется одно."
+                )
+
+        # Проверка заключительного видео
+        if dto.is_last:
+            last_video_course = await self.repository.get_first_with_filters(filters=[
+                and_(
+                    self.repository.model.is_last.is_(True),
+                    self.repository.model.id != id  # Исключаем текущую запись
+                )
+            ])
+            if last_video_course is not None:
+                if last_video_course.level < dto.level:
+                    raise AppExceptionResponse.bad_request(
+                        message="Невозможно создать видео с уровнем выше, чем у последнего."
+                    )
+                raise AppExceptionResponse.bad_request(
+                    message="Невозможно создать два финальных видео, так как в курсе уже есть одно заключительное."
+                )
         return existed
 

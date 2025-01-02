@@ -3,7 +3,7 @@ from typing import Annotated, Optional
 
 from fastapi import Path
 from pydantic import EmailStr, Field
-from sqlalchemy import Date, Numeric, String, Text, text, Integer, ForeignKey
+from sqlalchemy import Date, Numeric, String, Text, text, Integer, ForeignKey, Boolean
 from sqlalchemy.dialects.mssql import JSON
 from sqlalchemy.orm import mapped_column
 
@@ -261,8 +261,9 @@ class ColumnConstants:
     StandardDate = Annotated[date, mapped_column(Date())]
 
     StandardInteger = Annotated[int, mapped_column(Integer())]
-    StandardNullableInteger = Annotated[Optional[int], mapped_column(Integer(),nullable=True)]
+    StandardNullableInteger = Annotated[Optional[int], mapped_column(Integer(), nullable=True)]
 
+    StandardBool = Annotated[bool, mapped_column(Boolean(), default=False)]
 
 class DTOConstant:
     StandardID = Annotated[int, Field(description="Уникальный идентификатор")]
@@ -311,6 +312,13 @@ class DTOConstant:
         int,
         Field(
             description="Стандартное цифровое поле",
+        ),
+    ]
+
+    StandardBoolean = Annotated[
+        bool,
+        Field(
+            description="Стандартное bool поле",
         ),
     ]
 
