@@ -3,6 +3,7 @@ from typing import Generic, TypeVar
 from pydantic import BaseModel
 
 from app.adapters.dto.course.course_dto import CourseRDTO, CourseRDTOWithRelated
+from app.adapters.dto.organization.organization_dto import OrganizationRDTOWithRelated
 from app.adapters.dto.user.user_dto import UserRDTOWithRelated
 from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated
 
@@ -48,3 +49,7 @@ class PaginationUsers(BasePageModel):
 
 class PaginationVideoCourses(BasePageModel):
     items: list[VideoCourseRDTOWithRelated]
+
+
+class PaginationOrganizations(BasePageModel):
+    items: list[OrganizationRDTOWithRelated]

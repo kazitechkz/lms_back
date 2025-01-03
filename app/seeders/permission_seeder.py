@@ -323,6 +323,34 @@ class PermissionSeeder(BaseSeeder):
                 title_en="Delete video course material",
                 description="Delete video course material",
                 value=PermissionConstants.DELETE_VIDEO_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Организацияны оқу",
+                title_ru="Чтение организации",
+                title_en="Read organization",
+                description="Read organization",
+                value=PermissionConstants.READ_ORGANIZATION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Организацияны жасау",
+                title_ru="Создание организации",
+                title_en="Create organization",
+                description="Create organization",
+                value=PermissionConstants.CREATE_ORGANIZATION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Организацияны жаңарту",
+                title_ru="Обновление организации",
+                title_en="Update organization",
+                description="Update organization",
+                value=PermissionConstants.UPDATE_ORGANIZATION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Организацияны жою",
+                title_ru="Удаление организации",
+                title_en="Delete organization",
+                description="Delete organization",
+                value=PermissionConstants.DELETE_ORGANIZATION_VALUE
             )
         ]
 

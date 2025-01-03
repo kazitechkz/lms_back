@@ -65,8 +65,14 @@ class PermissionConstants:
     UPDATE_VIDEO_MATERIAL_VALUE = "update_video_material_value"
     DELETE_VIDEO_MATERIAL_VALUE = "delete_video_material_value"
 
+    # organization permissions
+    READ_ORGANIZATION_VALUE = "read_organization_value"
+    CREATE_ORGANIZATION_VALUE = "create_organization_value"
+    UPDATE_ORGANIZATION_VALUE = "update_organization_value"
+    DELETE_ORGANIZATION_VALUE = "delete_organization_value"
+
     # PERMISSIONS, которые нельзя удалить или изменить
-    IMMUTABLE_ROLES = frozenset(
+    IMMUTABLE_PERMISSIONS = frozenset(
         [
             READ_PERMISSION_VALUE,
             CREATE_PERMISSION_VALUE,
@@ -112,5 +118,9 @@ class PermissionConstants:
             CREATE_VIDEO_MATERIAL_VALUE,
             UPDATE_VIDEO_MATERIAL_VALUE,
             DELETE_VIDEO_MATERIAL_VALUE,
+            READ_ORGANIZATION_VALUE,
+            CREATE_ORGANIZATION_VALUE,
+            UPDATE_ORGANIZATION_VALUE,
+            DELETE_ORGANIZATION_VALUE,
         ]
     )
