@@ -47,6 +47,24 @@ class PermissionConstants:
     UPDATE_VIDEO_COURSE_VALUE = "update_video_course_value"
     DELETE_VIDEO_COURSE_VALUE = "delete_video_course_value"
 
+    # material permissions
+    READ_MATERIAL_VALUE = "read_material_value"
+    CREATE_MATERIAL_VALUE = "create_material_value"
+    UPDATE_MATERIAL_VALUE = "update_material_value"
+    DELETE_MATERIAL_VALUE = "delete_material_value"
+
+    # course material permissions
+    READ_COURSE_MATERIAL_VALUE = "read_course_material_value"
+    CREATE_COURSE_MATERIAL_VALUE = "create_course_material_value"
+    UPDATE_COURSE_MATERIAL_VALUE = "update_course_material_value"
+    DELETE_COURSE_MATERIAL_VALUE = "delete_course_material_value"
+
+    # video material permissions
+    READ_VIDEO_MATERIAL_VALUE = "read_video_material_value"
+    CREATE_VIDEO_MATERIAL_VALUE = "create_video_material_value"
+    UPDATE_VIDEO_MATERIAL_VALUE = "update_video_material_value"
+    DELETE_VIDEO_MATERIAL_VALUE = "delete_video_material_value"
+
     # PERMISSIONS, которые нельзя удалить или изменить
     IMMUTABLE_ROLES = frozenset(
         [
@@ -82,5 +100,17 @@ class PermissionConstants:
             CREATE_VIDEO_COURSE_VALUE,
             UPDATE_VIDEO_COURSE_VALUE,
             DELETE_VIDEO_COURSE_VALUE,
+            READ_MATERIAL_VALUE,
+            CREATE_MATERIAL_VALUE,
+            UPDATE_MATERIAL_VALUE,
+            DELETE_MATERIAL_VALUE,
+            READ_COURSE_MATERIAL_VALUE,
+            CREATE_COURSE_MATERIAL_VALUE,
+            UPDATE_COURSE_MATERIAL_VALUE,
+            DELETE_COURSE_MATERIAL_VALUE,
+            READ_VIDEO_MATERIAL_VALUE,
+            CREATE_VIDEO_MATERIAL_VALUE,
+            UPDATE_VIDEO_MATERIAL_VALUE,
+            DELETE_VIDEO_MATERIAL_VALUE,
         ]
     )

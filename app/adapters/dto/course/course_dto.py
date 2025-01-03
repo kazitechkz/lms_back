@@ -6,6 +6,7 @@ from app.adapters.dto.course_category.course_category_dto import CourseCategoryR
 from app.adapters.dto.course_tag.course_tag_dto import CourseTagRDTOWithRelated
 from app.adapters.dto.course_type.course_type_dto import CourseTypeRDTO
 from app.adapters.dto.language.language_dto import LanguageRDTO
+from app.adapters.dto.material.material_dto import MaterialRDTOWithRelated
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -58,6 +59,7 @@ class CourseRDTOWithRelated(CourseRDTO):
     category: Optional[CourseCategoryRDTO] = Field(default=None, description="Категория курса")
     lang: Optional[LanguageRDTO] = Field(default=None, description="Язык курса")
     tags: Optional[list[CourseTagRDTOWithRelated]] = Field(description="Теги курса")
+    materials: Optional[list[MaterialRDTOWithRelated]] = Field(description="Материалы курса")
 
     class Config:
         from_attributes = True

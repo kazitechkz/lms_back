@@ -1,9 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.repositories.file.file_repository import FileRepository
-from app.adapters.repositories.role.role_repository import RoleRepository
 from app.core.app_exception_response import AppExceptionResponse
-from app.infrastructure.db_constants import AppDbValueConstants
 from app.infrastructure.file_uploader_s3 import DocumentUploaderS3
 from app.use_cases.base_case import BaseUseCase
 

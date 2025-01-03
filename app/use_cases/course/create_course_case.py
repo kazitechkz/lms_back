@@ -31,7 +31,8 @@ class CreateCourseCase(BaseUseCase[CourseRDTO]):
             joinedload(self.repository.model.type),
             joinedload(self.repository.model.category),
             joinedload(self.repository.model.lang),
-            selectinload(self.repository.model.tags)
+            selectinload(self.repository.model.tags),
+            selectinload(self.repository.model.materials)
         ])
         if tag_data:
             await self.course_tag_use_case.execute(tag_ids=tag_data, course_id=course.id)

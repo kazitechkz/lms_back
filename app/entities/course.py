@@ -2,6 +2,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
+from app.entities.course_material import CourseMaterialModel
 from app.infrastructure.database import Base
 from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
 
@@ -36,33 +37,13 @@ class CourseModel(Base):
     category: Mapped[AppTableNames.CourseCategoryModelName] = relationship(AppTableNames.CourseCategoryModelName)
     type: Mapped[AppTableNames.CourseTypeModelName] = relationship(AppTableNames.CourseTypeModelName)
     lang: Mapped[AppTableNames.LanguageModelName] = relationship(AppTableNames.LanguageModelName)
-
+    materials: Mapped[list[CourseMaterialModel]] = relationship(
+        f"{AppTableNames.CourseMaterialModelName}",
+        viewonly=True
+    )
     tags: Mapped[list[AppTableNames.CourseTagModelName]] = relationship(
         f"{AppTableNames.CourseTagModelName}",
-        )
-    # materials: Mapped[list["MaterialModel"]] = relationship(
-    #     f"{AppTableNames.MaterialModelName}",
-    #     back_populates="parent"
-    # )
+    )
 
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
-
-
-# class CourseMaterialModel(Base):
-#     __tablename__ = AppTableNames.CourseMaterialTableName
-#     id: Mapped[ColumnConstants.ID]
-#
-#     course_id: Mapped[ColumnConstants.ForeignKeyInteger(
-#         table_name=AppTableNames.CourseTableName,
-#         onupdate="CASCADE",
-#         ondelete="CASCADE"
-#     )]
-#     material_id: Mapped[ColumnConstants.ForeignKeyInteger(
-#         table_name=AppTableNames.TagTableName,
-#         onupdate="CASCADE",
-#         ondelete="CASCADE"
-#     )]
-#
-#     created_at: Mapped[ColumnConstants.CreatedAt]
-#     updated_at: Mapped[ColumnConstants.UpdatedAt]

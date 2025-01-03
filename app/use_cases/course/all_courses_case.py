@@ -1,12 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.orm import selectinload
 
-from app.adapters.dto.course.course_dto import CourseRDTO, CourseRDTOWithRelated
+from app.adapters.dto.course.course_dto import CourseRDTOWithRelated
 from app.adapters.dto.pagination_dto import PaginationCourse
 from app.adapters.filters.course.course_filter import CourseFilter
 from app.adapters.repositories.course.course_repository import CourseRepository
 from app.entities.course_tag import CourseTagModel
-from app.entities.tag import TagModel
 from app.use_cases.base_case import BaseUseCase
 
 
@@ -25,6 +24,7 @@ class AllCoursesCase(BaseUseCase[PaginationCourse]):
                 selectinload(self.repository.model.lang),
                 selectinload(self.repository.model.type),
                 selectinload(self.repository.model.tags).selectinload(CourseTagModel.tag),
+                selectinload(self.repository.model.materials)
             ]
         )
 

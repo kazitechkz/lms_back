@@ -239,6 +239,90 @@ class PermissionSeeder(BaseSeeder):
                 title_en="Delete video course",
                 description="Delete video course",
                 value=PermissionConstants.DELETE_VIDEO_COURSE_VALUE
+            ),
+            PermissionModel(
+                title_kk="Материалды оқу",
+                title_ru="Чтение материала",
+                title_en="Read material",
+                description="Read material",
+                value=PermissionConstants.READ_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Материалды жасау",
+                title_ru="Создание материала",
+                title_en="Create material",
+                description="Create material",
+                value=PermissionConstants.CREATE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Материалды жаңарту",
+                title_ru="Обновление материала",
+                title_en="Update material",
+                description="Update material",
+                value=PermissionConstants.UPDATE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Материалды жою",
+                title_ru="Удаление материала",
+                title_en="Delete material",
+                description="Delete material",
+                value=PermissionConstants.DELETE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Курстың материалын оқу",
+                title_ru="Чтение материала курса",
+                title_en="Read course material",
+                description="Read course material",
+                value=PermissionConstants.READ_COURSE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Курстың материалын жасау",
+                title_ru="Создание материала курса",
+                title_en="Create course material",
+                description="Create course material",
+                value=PermissionConstants.CREATE_COURSE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Курстың материалын жаңарту",
+                title_ru="Обновление материала курса",
+                title_en="Update course material",
+                description="Update course material",
+                value=PermissionConstants.UPDATE_COURSE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Курстың материалын жою",
+                title_ru="Удаление материала курса",
+                title_en="Delete course material",
+                description="Delete course material",
+                value=PermissionConstants.DELETE_COURSE_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурстың материалын оқу",
+                title_ru="Чтение материала видеокурса",
+                title_en="Read video course material",
+                description="Read video course material",
+                value=PermissionConstants.READ_VIDEO_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурстың материалын жасау",
+                title_ru="Создание материала видеокурса",
+                title_en="Create video course material",
+                description="Create video course material",
+                value=PermissionConstants.CREATE_VIDEO_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурстың материалын жаңарту",
+                title_ru="Обновление материала видеокурса",
+                title_en="Update video course material",
+                description="Update video course material",
+                value=PermissionConstants.UPDATE_VIDEO_MATERIAL_VALUE
+            ),
+            PermissionModel(
+                title_kk="Видеокурстың материалын жою",
+                title_ru="Удаление материала видеокурса",
+                title_en="Delete video course material",
+                description="Delete video course material",
+                value=PermissionConstants.DELETE_VIDEO_MATERIAL_VALUE
             )
         ]
 

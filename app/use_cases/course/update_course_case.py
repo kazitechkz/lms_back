@@ -38,6 +38,7 @@ class UpdateCourseCase(BaseUseCase[CourseRDTOWithRelated]):
             selectinload(self.repository.model.type),
             selectinload(self.repository.model.lang),
             selectinload(self.repository.model.tags).selectinload(CourseTagModel.tag),
+            selectinload(self.repository.model.materials)
         ])
         if tag_data:
             await self.course_create_tag_use_case.execute(tag_ids=tag_data, course_id=course.id)

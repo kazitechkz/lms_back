@@ -9,7 +9,6 @@ from app.adapters.dto.user.user_dto import UserRDTOWithRelated
 from app.adapters.dto.video_course.video_course_dto import VideoCourseCDTO
 from app.adapters.repositories.file.file_repository import FileRepository
 from app.core.app_exception_response import AppExceptionResponse
-from app.infrastructure.google_service import device_authorization
 from app.infrastructure.video_uploader_youtube import YoutubeUpload
 from app.use_cases.base_case import BaseUseCase
 from app.use_cases.token.get_token_case import GetTokenCase

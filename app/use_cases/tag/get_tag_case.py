@@ -1,13 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.role.role_dto import RoleRDTO
 from app.adapters.dto.tag.tag_dto import TagRDTO
 from app.adapters.repositories.tag.tag_repository import TagRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
 
 
-class GetTagCase(BaseUseCase[RoleRDTO]):
+class GetTagCase(BaseUseCase[TagRDTO]):
 
     def __init__(self, db: AsyncSession):
         self.repository = TagRepository(db)
