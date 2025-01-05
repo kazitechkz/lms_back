@@ -1,6 +1,8 @@
 from fastapi import Query
+from sqlalchemy import or_
 
 from app.adapters.filters.base_filter import BaseFilter
+from app.entities.organization import OrganizationModel
 
 
 class OrganizationFilter(BaseFilter):
@@ -21,6 +23,15 @@ class OrganizationFilter(BaseFilter):
         self.per_page = per_page
         self.page = page
         self.search = search
+        self.model = OrganizationModel
 
     def apply(self) -> list:
-        pass
+        filters = []
+        if self.search:
+            filters.append(
+                or_(
+                    self.model.name.like(f"%{self.search}%"),
+                    self.model.bin.like(f"%{self.search}%")
+                )
+            )
+        return filters

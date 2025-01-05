@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, UploadFile, File
-from pydantic import Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTO, CourseRDTOWithRelated
+from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTOWithRelated
 from app.adapters.dto.pagination_dto import PaginationCourse
 from app.adapters.filters.course.course_filter import CourseFilter
 from app.core.auth_core import permission_dependency

@@ -1,4 +1,5 @@
 from app.adapters.api.auth_api import AuthApi
+from app.adapters.api.characteristic_api import CharacteristicApi
 from app.adapters.api.course_api import CourseApi
 from app.adapters.api.course_category_api import CourseCategoryApi
 from app.adapters.api.course_material_api import CourseMaterialApi
@@ -8,8 +9,10 @@ from app.adapters.api.language_api import LanguageApi
 from app.adapters.api.material_api import MaterialApi
 from app.adapters.api.organization_api import OrganizationApi
 from app.adapters.api.permission_api import PermissionApi
+from app.adapters.api.question_api import QuestionApi
 from app.adapters.api.role_api import RoleApi
 from app.adapters.api.tag_api import TagApi
+from app.adapters.api.test_api import TestApi
 from app.adapters.api.token_api import TokenApi
 from app.adapters.api.user_api import UserApi
 from app.adapters.api.user_type_api import UserTypeApi
@@ -36,4 +39,7 @@ def include_routers(app) -> None:
     app.include_router(CourseMaterialApi().router, prefix="/course-material", tags=["course-material"])
     app.include_router(VideoMaterialApi().router, prefix="/video-material", tags=["video-material"])
     app.include_router(OrganizationApi().router, prefix="/organization", tags=["organization"])
+    app.include_router(TestApi().router, prefix="/test", tags=["test"])
+    app.include_router(QuestionApi().router, prefix="/question", tags=["question"])
+    app.include_router(CharacteristicApi().router, prefix="/characteristic", tags=["characteristic"])
 

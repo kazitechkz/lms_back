@@ -19,6 +19,7 @@ class AllCoursesCase(BaseUseCase[PaginationCourse]):
             dto=CourseRDTOWithRelated,
             page=self.params.page,
             per_page=self.params.per_page,
+            filters=self.params.apply(),
             options=[
                 selectinload(self.repository.model.category),
                 selectinload(self.repository.model.lang),

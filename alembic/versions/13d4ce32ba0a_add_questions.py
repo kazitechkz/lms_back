@@ -20,16 +20,57 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table(
+        "question_types",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("title_ru", sa.String(length=256), nullable=False),
+        sa.Column("title_kk", sa.String(length=256), nullable=False),
+        sa.Column("title_en", sa.String(length=256), nullable=True),
+        sa.Column("value", sa.String(length=256), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.PrimaryKeyConstraint("id")
+    )
+    op.create_table(
         'questions',
-        sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('test_id', sa.Integer, sa.ForeignKey('tests.id'), nullable=False),
+        sa.Column('id', sa.Integer, nullable=False),
+        sa.Column('test_id', sa.Integer, nullable=False),
         sa.Column('text', sa.Text, nullable=False),
         sa.Column('hint', sa.Text, nullable=True),
         sa.Column('explanation', sa.Text, nullable=True),
-        sa.Column('type', sa.String(length=256), nullable=False),
-        sa.Column('points', sa.Float, default=1.0)
+        sa.Column('type_id', sa.Integer, nullable=False),
+        sa.Column('points', sa.Float, default=1.0),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(['test_id'], ['tests.id'], onupdate='cascade', ondelete='cascade'),
+        sa.ForeignKeyConstraint(['type_id'], ['test_types.id'], onupdate='cascade', ondelete='cascade'),
+        sa.PrimaryKeyConstraint("id")
     )
+    op.create_index(op.f('ix_questions_test_id'), 'questions', ['test_id'], unique=False)
+    op.create_index(op.f('ix_questions_type_id'), 'questions', ['type_id'], unique=False)
 
 
 def downgrade() -> None:
+    op.drop_index(op.f('ix_questions_test_id'), table_name='questions')
+    op.drop_index(op.f('ix_questions_type_id'), table_name='questions')
+    op.drop_table('question_types')
     op.drop_table('questions')

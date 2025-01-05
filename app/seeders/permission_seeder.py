@@ -351,6 +351,90 @@ class PermissionSeeder(BaseSeeder):
                 title_en="Delete organization",
                 description="Delete organization",
                 value=PermissionConstants.DELETE_ORGANIZATION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Тестті оқу",
+                title_ru="Чтение тестов",
+                title_en="Read test",
+                description="Read test",
+                value=PermissionConstants.READ_TEST_VALUE
+            ),
+            PermissionModel(
+                title_kk="Тестті жасау",
+                title_ru="Создание тестов",
+                title_en="Create test",
+                description="Create test",
+                value=PermissionConstants.CREATE_TEST_VALUE
+            ),
+            PermissionModel(
+                title_kk="Тестті жаңарту",
+                title_ru="Обновление тестов",
+                title_en="Update test",
+                description="Update test",
+                value=PermissionConstants.UPDATE_TEST_VALUE
+            ),
+            PermissionModel(
+                title_kk="Тестті жою",
+                title_ru="Удаление тестов",
+                title_en="Delete test",
+                description="Delete test",
+                value=PermissionConstants.DELETE_TEST_VALUE
+            ),
+            PermissionModel(
+                title_kk="Сұрақты оқу",
+                title_ru="Чтение вопросов",
+                title_en="Read question",
+                description="Read question",
+                value=PermissionConstants.READ_QUESTION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Сұрақты жасау",
+                title_ru="Создание вопросов",
+                title_en="Create question",
+                description="Create question",
+                value=PermissionConstants.CREATE_QUESTION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Сұрақты жаңарту",
+                title_ru="Обновление вопросов",
+                title_en="Update question",
+                description="Update question",
+                value=PermissionConstants.UPDATE_QUESTION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Сұрақты жою",
+                title_ru="Удаление вопросов",
+                title_en="Delete question",
+                description="Delete question",
+                value=PermissionConstants.DELETE_QUESTION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Мінезді оқу",
+                title_ru="Чтение характеристики",
+                title_en="Read characteristic",
+                description="Read characteristic",
+                value=PermissionConstants.READ_CHARACTERISTIC_VALUE
+            ),
+            PermissionModel(
+                title_kk="Мінезді жасау",
+                title_ru="Создание характеристики",
+                title_en="Create characteristic",
+                description="Create characteristic",
+                value=PermissionConstants.CREATE_CHARACTERISTIC_VALUE
+            ),
+            PermissionModel(
+                title_kk="Мінезді жаңарту",
+                title_ru="Обновление характеристики",
+                title_en="Update characteristic",
+                description="Update characteristic",
+                value=PermissionConstants.UPDATE_CHARACTERISTIC_VALUE
+            ),
+            PermissionModel(
+                title_kk="Мінезді жою",
+                title_ru="Удаление характеристики",
+                title_en="Delete characteristic",
+                description="Delete characteristic",
+                value=PermissionConstants.DELETE_CHARACTERISTIC_VALUE
             )
         ]
 

@@ -20,14 +20,33 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table(
-        'feedback',
-        sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column('test_id', sa.Integer, sa.ForeignKey('tests.id'), nullable=False),
-        sa.Column('question_id', sa.Integer, sa.ForeignKey('questions.id'), nullable=True),
+        'feedbacks',
+        sa.Column('id', sa.Integer, nullable=False),
+        sa.Column('test_id', sa.Integer, nullable=False),
+        sa.Column('question_id', sa.Integer, nullable=True),
         sa.Column('description', sa.Text, nullable=False),
-        sa.Column('created_at', sa.DateTime, nullable=False)
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(['test_id'], ['tests.id'], onupdate='cascade', ondelete='cascade'),
+        sa.ForeignKeyConstraint(['question_id'], ['questions.id'], onupdate='cascade', ondelete='set null'),
+        sa.PrimaryKeyConstraint("id")
+
     )
+    op.create_index(op.f('ix_feedbacks_test_id'), 'feedbacks', ['test_id'], unique=False)
+    op.create_index(op.f('ix_feedbacks_question_id'), 'feedbacks', ['question_id'], unique=False)
 
 
 def downgrade() -> None:
-    op.drop_table('feedback')
+    op.drop_index(op.f('ix_feedbacks_test_id'), table_name='feedbacks')
+    op.drop_index(op.f('ix_feedbacks_question_id'), table_name='feedbacks')
+    op.drop_table('feedbacks')

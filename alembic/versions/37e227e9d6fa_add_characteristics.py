@@ -25,10 +25,22 @@ def upgrade() -> None:
         sa.Column('title_kk', sa.String(length=256), nullable=False),
         sa.Column('title_ru', sa.String(length=256), nullable=False),
         sa.Column('title_en', sa.String(length=256), nullable=True),
-        sa.Column('description_kk', sa.Text, nullable=True),
-        sa.Column('description_ru', sa.Text, nullable=True),
+        sa.Column('description_kk', sa.Text, nullable=False),
+        sa.Column('description_ru', sa.Text, nullable=False),
         sa.Column('description_en', sa.Text, nullable=True),
-        sa.Column('value', sa.String(length=256), nullable=True)
+        sa.Column('value', sa.String(length=256), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+            nullable=False,
+        ),
     )
 
 

@@ -16,6 +16,12 @@ class AuthCDTO(BaseModel):
 
     class Config:
         from_attributes = True
+        json_schema_extra = {
+            "example": {
+                "email": "admin@gmail.com",
+                "password": "admin123"
+            }
+        }
 
 
 class AuthRDTO(BaseModel):

@@ -23,6 +23,7 @@ class AppTableNames:
     QuestionTypeTableName = "question_types"
     CharacteristicTableName = "characteristics"
     OrganizationTableName = "organizations"
+    TestTypeTableName = "test_types"
     TestTableName = "tests"
     FeedbackTableName = "feedbacks"
     AnswerTableName = "answers"
@@ -46,6 +47,7 @@ class AppTableNames:
     OrganizationTypeModelName = "OrganizationTypeModel"
     CourseCategoryModelName = "CourseCategoryModel"
     CourseTypeModelName = "CourseTypeModel"
+    TestTypeModelName = "TestTypeModel"
     TagModelName = "TagModel"
     FeedbackModelName = "FeedbackModel"
     QuestionModelName = "QuestionModel"
@@ -90,6 +92,28 @@ class AppDbValueConstants:
             RUSSIAN_VALUE,
             KAZAKH_VALUE,
             ENGLISH_VALUE,
+        ]
+    )
+
+    # TestTypes
+    TEST_VALUE = "test_value"
+    EXAM_VALUE = "exam_value"
+    IMMUTABLE_TEST_TYPES = frozenset(
+        [
+            TEST_VALUE,
+            EXAM_VALUE,
+        ]
+    )
+
+    # QuestionTypes
+    MULTIPLE_CHOICE_VALUE = "multiple_choice"
+    DISTRIBUTION_VALUE = "distribution_value"
+    SINGLE_CHOICE_VALUE = "single_choice"
+    IMMUTABLE_QUESTION_TYPES = frozenset(
+        [
+            MULTIPLE_CHOICE_VALUE,
+            DISTRIBUTION_VALUE,
+            SINGLE_CHOICE_VALUE,
         ]
     )
 
@@ -148,7 +172,7 @@ class FieldConstants:
 
 
 class ColumnConstants:
-    ID = Annotated[int, mapped_column(primary_key=True)]
+    ID = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
     # ForeignKey унификации с onupdate и ondelete
     ForeignKeyInteger = (
         lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[

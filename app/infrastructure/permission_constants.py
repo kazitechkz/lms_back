@@ -71,6 +71,24 @@ class PermissionConstants:
     UPDATE_ORGANIZATION_VALUE = "update_organization_value"
     DELETE_ORGANIZATION_VALUE = "delete_organization_value"
 
+    # test permissions
+    READ_TEST_VALUE = "read_test_value"
+    CREATE_TEST_VALUE = "create_test_value"
+    UPDATE_TEST_VALUE = "update_test_value"
+    DELETE_TEST_VALUE = "delete_test_value"
+
+    # question permissions
+    READ_QUESTION_VALUE = "read_question_value"
+    CREATE_QUESTION_VALUE = "create_question_value"
+    UPDATE_QUESTION_VALUE = "update_question_value"
+    DELETE_QUESTION_VALUE = "delete_question_value"
+
+    # characteristic permissions
+    READ_CHARACTERISTIC_VALUE = "read_characteristic_value"
+    CREATE_CHARACTERISTIC_VALUE = "create_characteristic_value"
+    UPDATE_CHARACTERISTIC_VALUE = "update_characteristic_value"
+    DELETE_CHARACTERISTIC_VALUE = "delete_characteristic_value"
+
     # PERMISSIONS, которые нельзя удалить или изменить
     IMMUTABLE_PERMISSIONS = frozenset(
         [
@@ -122,5 +140,17 @@ class PermissionConstants:
             CREATE_ORGANIZATION_VALUE,
             UPDATE_ORGANIZATION_VALUE,
             DELETE_ORGANIZATION_VALUE,
+            READ_QUESTION_VALUE,
+            CREATE_QUESTION_VALUE,
+            UPDATE_QUESTION_VALUE,
+            DELETE_QUESTION_VALUE,
+            READ_CHARACTERISTIC_VALUE,
+            CREATE_CHARACTERISTIC_VALUE,
+            UPDATE_CHARACTERISTIC_VALUE,
+            DELETE_CHARACTERISTIC_VALUE,
+            READ_TEST_VALUE,
+            CREATE_TEST_VALUE,
+            UPDATE_TEST_VALUE,
+            DELETE_TEST_VALUE,
         ]
     )
