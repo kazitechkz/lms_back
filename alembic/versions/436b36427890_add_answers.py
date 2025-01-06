@@ -22,7 +22,7 @@ def upgrade() -> None:
         'answers',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
         sa.Column('question_id', sa.Integer, sa.ForeignKey('questions.id'), nullable=False),
-        sa.Column('text', sa.String(length=256), nullable=False),
+        sa.Column('text', sa.Text(), nullable=False),
         sa.Column('is_correct', sa.Boolean, default=False),
         sa.Column('characteristic_id', sa.Integer, nullable=True),
         sa.Column('points', sa.Float, default=0.0),

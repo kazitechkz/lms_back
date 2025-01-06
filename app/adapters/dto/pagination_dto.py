@@ -2,8 +2,10 @@ from typing import Generic, TypeVar
 
 from pydantic import BaseModel
 
+from app.adapters.dto.blog.blog_dto import BlogRDTOWithRelated
 from app.adapters.dto.characteristic.characteristic_dto import CharacteristicRDTO
 from app.adapters.dto.course.course_dto import CourseRDTOWithRelated
+from app.adapters.dto.feedback.feedback_dto import FeedbackRDTOWithRelated
 from app.adapters.dto.organization.organization_dto import OrganizationRDTOWithRelated
 from app.adapters.dto.question.question_dto import QuestionRDTOWithRelated
 from app.adapters.dto.question_type.question_type_dto import QuestionTypeRDTO
@@ -69,3 +71,11 @@ class PaginationQuestions(BasePageModel):
 
 class PaginationCharacteristics(BasePageModel):
     items: list[CharacteristicRDTO]
+
+
+class PaginationFeedbacks(BasePageModel):
+    items: list[FeedbackRDTOWithRelated]
+
+
+class PaginationBlogs(BasePageModel):
+    items: list[BlogRDTOWithRelated]

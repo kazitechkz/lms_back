@@ -1,9 +1,13 @@
+from app.adapters.api.answer_api import AnswerApi
 from app.adapters.api.auth_api import AuthApi
+from app.adapters.api.blog_api import BlogApi
+from app.adapters.api.blog_category_api import BlogCategoryApi
 from app.adapters.api.characteristic_api import CharacteristicApi
 from app.adapters.api.course_api import CourseApi
 from app.adapters.api.course_category_api import CourseCategoryApi
 from app.adapters.api.course_material_api import CourseMaterialApi
 from app.adapters.api.course_type_api import CourseTypeApi
+from app.adapters.api.feedback_api import FeedbackApi
 from app.adapters.api.file_api import FileApi
 from app.adapters.api.language_api import LanguageApi
 from app.adapters.api.material_api import MaterialApi
@@ -42,4 +46,8 @@ def include_routers(app) -> None:
     app.include_router(TestApi().router, prefix="/test", tags=["test"])
     app.include_router(QuestionApi().router, prefix="/question", tags=["question"])
     app.include_router(CharacteristicApi().router, prefix="/characteristic", tags=["characteristic"])
+    app.include_router(AnswerApi().router, prefix="/answer", tags=["answer"])
+    app.include_router(FeedbackApi().router, prefix="/feedback", tags=["feedback"])
+    app.include_router(BlogCategoryApi().router, prefix="/blog-category", tags=["blog-category"])
+    app.include_router(BlogApi().router, prefix="/blog", tags=["blog"])
 

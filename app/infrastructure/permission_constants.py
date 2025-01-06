@@ -89,6 +89,30 @@ class PermissionConstants:
     UPDATE_CHARACTERISTIC_VALUE = "update_characteristic_value"
     DELETE_CHARACTERISTIC_VALUE = "delete_characteristic_value"
 
+    # answer permissions
+    READ_ANSWER_VALUE = "read_answer_value"
+    CREATE_ANSWER_VALUE = "create_answer_value"
+    UPDATE_ANSWER_VALUE = "update_answer_value"
+    DELETE_ANSWER_VALUE = "delete_answer_value"
+
+    # feedback permissions
+    READ_FEEDBACK_VALUE = "read_feedback_value"
+    CREATE_FEEDBACK_VALUE = "create_feedback_value"
+    UPDATE_FEEDBACK_VALUE = "update_feedback_value"
+    DELETE_FEEDBACK_VALUE = "delete_feedback_value"
+
+    # blog_category permissions
+    READ_BLOG_CATEGORY_VALUE = "read_blog_category_value"
+    CREATE_BLOG_CATEGORY_VALUE = "create_blog_category_value"
+    UPDATE_BLOG_CATEGORY_VALUE = "update_blog_category_value"
+    DELETE_BLOG_CATEGORY_VALUE = "delete_blog_category_value"
+
+    # blog permissions
+    READ_BLOG_VALUE = "read_blog_value"
+    CREATE_BLOG_VALUE = "create_blog_value"
+    UPDATE_BLOG_VALUE = "update_blog_value"
+    DELETE_BLOG_VALUE = "delete_blog_value"
+
     # PERMISSIONS, которые нельзя удалить или изменить
     IMMUTABLE_PERMISSIONS = frozenset(
         [
@@ -152,5 +176,21 @@ class PermissionConstants:
             CREATE_TEST_VALUE,
             UPDATE_TEST_VALUE,
             DELETE_TEST_VALUE,
+            READ_ANSWER_VALUE,
+            CREATE_ANSWER_VALUE,
+            UPDATE_ANSWER_VALUE,
+            DELETE_ANSWER_VALUE,
+            READ_FEEDBACK_VALUE,
+            CREATE_FEEDBACK_VALUE,
+            UPDATE_FEEDBACK_VALUE,
+            DELETE_FEEDBACK_VALUE,
+            READ_BLOG_CATEGORY_VALUE,
+            CREATE_BLOG_CATEGORY_VALUE,
+            UPDATE_BLOG_CATEGORY_VALUE,
+            DELETE_BLOG_CATEGORY_VALUE,
+            READ_BLOG_VALUE,
+            CREATE_BLOG_VALUE,
+            UPDATE_BLOG_VALUE,
+            DELETE_BLOG_VALUE,
         ]
     )

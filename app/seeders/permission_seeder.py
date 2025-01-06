@@ -435,6 +435,118 @@ class PermissionSeeder(BaseSeeder):
                 title_en="Delete characteristic",
                 description="Delete characteristic",
                 value=PermissionConstants.DELETE_CHARACTERISTIC_VALUE
+            ),
+            PermissionModel(
+                title_kk="Жауапты оқу",
+                title_ru="Чтение ответов",
+                title_en="Read answer",
+                description="Read answer",
+                value=PermissionConstants.READ_ANSWER_VALUE
+            ),
+            PermissionModel(
+                title_kk="Жауапты жасау",
+                title_ru="Создание ответов",
+                title_en="Create answer",
+                description="Create answer",
+                value=PermissionConstants.CREATE_ANSWER_VALUE
+            ),
+            PermissionModel(
+                title_kk="Жауапты жаңарту",
+                title_ru="Обновление ответов",
+                title_en="Update answer",
+                description="Update answer",
+                value=PermissionConstants.UPDATE_ANSWER_VALUE
+            ),
+            PermissionModel(
+                title_kk="Жауапты жою",
+                title_ru="Удаление ответов",
+                title_en="Delete answer",
+                description="Delete answer",
+                value=PermissionConstants.DELETE_ANSWER_VALUE
+            ),
+            PermissionModel(
+                title_kk="Өтінішті оқу",
+                title_ru="Чтение обращении",
+                title_en="Read feedback",
+                description="Read feedback",
+                value=PermissionConstants.READ_FEEDBACK_VALUE
+            ),
+            PermissionModel(
+                title_kk="Өтінішті жасау",
+                title_ru="Создание обращении",
+                title_en="Create feedback",
+                description="Create feedback",
+                value=PermissionConstants.CREATE_FEEDBACK_VALUE
+            ),
+            PermissionModel(
+                title_kk="Өтінішті жаңарту",
+                title_ru="Обновление обращении",
+                title_en="Update feedback",
+                description="Update feedback",
+                value=PermissionConstants.UPDATE_FEEDBACK_VALUE
+            ),
+            PermissionModel(
+                title_kk="Өтінішті жою",
+                title_ru="Удаление обращении",
+                title_en="Delete feedback",
+                description="Delete feedback",
+                value=PermissionConstants.DELETE_FEEDBACK_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогтың категориясын оқу",
+                title_ru="Чтение категории блога",
+                title_en="Read blog category",
+                description="Read blog category",
+                value=PermissionConstants.READ_BLOG_CATEGORY_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогтың категориясын жасау",
+                title_ru="Создание категории блога",
+                title_en="Create blog category",
+                description="Create blog category",
+                value=PermissionConstants.CREATE_BLOG_CATEGORY_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогтың категориясын жаңарту",
+                title_ru="Обновление категории блога",
+                title_en="Update blog category",
+                description="Update blog category",
+                value=PermissionConstants.UPDATE_BLOG_CATEGORY_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогтың категориясын жою",
+                title_ru="Удаление категории блога",
+                title_en="Delete blog category",
+                description="Delete blog category",
+                value=PermissionConstants.DELETE_BLOG_CATEGORY_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогты оқу",
+                title_ru="Чтение блога",
+                title_en="Read blog",
+                description="Read blog",
+                value=PermissionConstants.READ_BLOG_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогты жасау",
+                title_ru="Создание блога",
+                title_en="Create blog",
+                description="Create blog",
+                value=PermissionConstants.CREATE_BLOG_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогты жаңарту",
+                title_ru="Обновление блога",
+                title_en="Update blog",
+                description="Update blog",
+                value=PermissionConstants.UPDATE_BLOG_VALUE
+            ),
+            PermissionModel(
+                title_kk="Блогты жою",
+                title_ru="Удаление блога",
+                title_en="Delete blog",
+                description="Delete blog",
+                value=PermissionConstants.DELETE_BLOG_VALUE
             )
         ]
 

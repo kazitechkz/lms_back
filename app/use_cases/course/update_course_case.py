@@ -58,7 +58,7 @@ class UpdateCourseCase(BaseUseCase[CourseRDTOWithRelated]):
         if not await self.lang_repo.get(id=dto.lang_id):
             raise AppExceptionResponse.not_found(message="Язык не найден")
         if file:
-            file_data = await self.upload_file_use_case.execute(file=file, upload_path="course_thumbnails")
+            file_data = await self.upload_file_use_case.execute(file=file, upload_path="course_thumbnails/")
             dto.thumbnail = file_data  # Присваиваем id загруженного файла к курсу
         else:
             dto.thumbnail = course.thumbnail  # Присваиваем id загруженного файла к курсу

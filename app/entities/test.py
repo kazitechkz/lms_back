@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import Float
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
@@ -95,14 +97,14 @@ class AnswerModel(Base):
         onupdate="CASCADE",
         ondelete="SET NULL"
     )]  # Связь с вопросом
-    text: Mapped[ColumnConstants.StandardVarchar]  # Текст ответа
+    text: Mapped[ColumnConstants.StandardText]  # Текст ответа
     is_correct: Mapped[ColumnConstants.StandardBool]  # Является ли ответ правильным
     characteristic_id: Mapped[ColumnConstants.ForeignKeyNullableInteger(
         table_name=AppTableNames.CharacteristicTableName,
         onupdate="CASCADE",
         ondelete="SET NULL"
     )]  # Связанная характеристика (например, Личная мотивация)
-    points: Mapped[float] = mapped_column(Float, default=0.0)  # Баллы, которые добавляет ответ
+    points: Mapped[Optional[float]] = mapped_column(Float, default=0.0)  # Баллы, которые добавляет ответ
     question: Mapped[AppTableNames.QuestionModelName] = relationship(AppTableNames.QuestionModelName,
                                                                      viewonly=True)
 

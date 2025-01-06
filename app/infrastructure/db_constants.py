@@ -19,6 +19,8 @@ class AppTableNames:
     CourseCategoryTableName = "course_categories"
     CourseTypeTableName = "course_types"
     TagTableName = "tags"
+    BlogTableName = "blogs"
+    BlogCategoryTableName = "blog_categories"
     QuestionTableName = "questions"
     QuestionTypeTableName = "question_types"
     CharacteristicTableName = "characteristics"
@@ -43,6 +45,8 @@ class AppTableNames:
     RolePermissionModelName = "RolePermissionModel"
     LanguageModelName = "LanguageModel"
     UserTypeModelName = "UserTypeModel"
+    BlogModelName = "BlogModel"
+    BlogCategoryModelName = "BlogCategoryModel"
     OrganizationModelName = "OrganizationModel"
     OrganizationTypeModelName = "OrganizationTypeModel"
     CourseCategoryModelName = "CourseCategoryModel"
@@ -307,6 +311,7 @@ class ColumnConstants:
 
     StandardBool = Annotated[bool, mapped_column(Boolean(), default=False)]
 
+
 class DTOConstant:
     StandardID = Annotated[int, Field(description="Уникальный идентификатор")]
 
@@ -354,6 +359,13 @@ class DTOConstant:
         int,
         Field(
             description="Стандартное цифровое поле",
+        ),
+    ]
+
+    StandardNullableInteger = Annotated[
+        Optional[int],
+        Field(
+            description="Стандартное необязательное цифровое поле",
         ),
     ]
 

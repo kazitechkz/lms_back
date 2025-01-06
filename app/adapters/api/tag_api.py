@@ -53,7 +53,7 @@ class TagApi:
         self.router.delete(
             "/delete/{id}",
             response_model=bool,
-            summary="Удалите роль по уникальному ID",
+            summary="Удалить роль по уникальному ID",
             description="Удаление роли по уникальному идентификатору",
         )(self.delete)
 

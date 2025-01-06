@@ -1,14 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.adapters.dto.course.course_dto import CourseRDTO, CourseRDTOWithRelated
+from app.adapters.dto.course.course_dto import CourseRDTOWithRelated
 from app.adapters.repositories.course.course_repository import CourseRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.entities.course_tag import CourseTagModel
 from app.use_cases.base_case import BaseUseCase
 
 
-class GetCourseCase(BaseUseCase[CourseRDTO]):
+class GetCourseCase(BaseUseCase[CourseRDTOWithRelated]):
 
     def __init__(self, db: AsyncSession):
         self.repository = CourseRepository(db)

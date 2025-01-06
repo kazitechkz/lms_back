@@ -15,7 +15,7 @@ from app.use_cases.course_tag.create_course_tag_case import CreateCourseTagCase
 from app.use_cases.file.upload_file_case import UploadFileCase
 
 
-class CreateCourseCase(BaseUseCase[CourseRDTO]):
+class CreateCourseCase(BaseUseCase[CourseRDTOWithRelated]):
     def __init__(self, db: AsyncSession):
         self.repository = CourseRepository(db)
         self.type_repo = CourseTypeRepository(db)
@@ -47,6 +47,6 @@ class CreateCourseCase(BaseUseCase[CourseRDTO]):
             raise AppExceptionResponse.not_found(message="Язык не найден")
         if file:
             file_data = await self.upload_file_use_case.execute(file=file, upload_path="course_thumbnails/")
-            dto.thumbnail = file_data  # Присваиваем id загруженного файла к курсу
+            dto.thumbnail = file_data
         data = dto.dict(exclude={"tags"})  # Удаляем tags из словаря
         return self.repository.model(**data)
