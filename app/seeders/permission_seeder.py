@@ -73,6 +73,34 @@ class PermissionSeeder(BaseSeeder):
                 value=PermissionConstants.READ_ROLE_VALUE
             ),
             PermissionModel(
+                title_kk="Рөльге рұқсатты жасау",
+                title_ru="Создание разрешении роли",
+                title_en="Create role permission",
+                description="Create role permission",
+                value=PermissionConstants.CREATE_ROLE_PERMISSION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Рөльге рұқсатты жаңарту",
+                title_ru="Обновление разрешении роли",
+                title_en="Update role permission",
+                description="Update role permission",
+                value=PermissionConstants.UPDATE_ROLE_PERMISSION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Рөльге рұқсатты жою",
+                title_ru="Удаление разрешении роли",
+                title_en="Delete role permission",
+                description="Delete role permission",
+                value=PermissionConstants.DELETE_ROLE_PERMISSION_VALUE
+            ),
+            PermissionModel(
+                title_kk="Рөльге рұқсатты оқу",
+                title_ru="Чтение разрешении роли",
+                title_en="Read role permission",
+                description="Read role permission",
+                value=PermissionConstants.READ_ROLE_PERMISSION_VALUE
+            ),
+            PermissionModel(
                 title_kk="Курстың категориясын оқу",
                 title_ru="Чтение категории курса",
                 title_en="Read course category",

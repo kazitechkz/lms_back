@@ -17,4 +17,4 @@ class DeleteCharacteristicCase(BaseUseCase[bool]):
     async def validate(self, id: int):
         existed = await self.repository.get(id=id)
         if existed is None:
-            raise AppExceptionResponse.not_found(message="Характеристика не найдена")
+            raise AppExceptionResponse.bad_request(message="Характеристика не найдена")

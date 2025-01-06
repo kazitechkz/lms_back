@@ -11,6 +11,12 @@ class PermissionConstants:
     UPDATE_ROLE_VALUE = "update_role_value"
     DELETE_ROLE_VALUE = "delete_role_value"
 
+    # role permission permissions
+    READ_ROLE_PERMISSION_VALUE = "read_role_permission_value"
+    CREATE_ROLE_PERMISSION_VALUE = "create_role_permission_value"
+    UPDATE_ROLE_PERMISSION_VALUE = "update_role_permission_value"
+    DELETE_ROLE_PERMISSION_VALUE = "delete_role_permission_value"
+
     # course type permissions
     READ_COURSE_TYPE_VALUE = "read_course_type_value"
     CREATE_COURSE_TYPE_VALUE = "create_course_type_value"
@@ -124,6 +130,10 @@ class PermissionConstants:
             CREATE_ROLE_VALUE,
             UPDATE_ROLE_VALUE,
             DELETE_ROLE_VALUE,
+            READ_ROLE_PERMISSION_VALUE,
+            CREATE_ROLE_PERMISSION_VALUE,
+            UPDATE_ROLE_PERMISSION_VALUE,
+            DELETE_ROLE_PERMISSION_VALUE,
             READ_COURSE_TYPE_VALUE,
             CREATE_COURSE_TYPE_VALUE,
             UPDATE_COURSE_TYPE_VALUE,

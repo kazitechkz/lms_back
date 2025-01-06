@@ -19,6 +19,6 @@ class DeleteBlogCase(BaseUseCase[bool]):
     async def validate(self, id: int):
         existed = await self.repository.get(id=id)
         if existed is None:
-            raise AppExceptionResponse.not_found(message="Блог не найден")
+            raise AppExceptionResponse.bad_request(message="Блог не найден")
         if existed.thumbnail is not None:
             await self.delete_file_use_case.execute(str(existed.thumbnail))

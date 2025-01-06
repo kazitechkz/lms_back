@@ -15,6 +15,7 @@ from app.adapters.api.organization_api import OrganizationApi
 from app.adapters.api.permission_api import PermissionApi
 from app.adapters.api.question_api import QuestionApi
 from app.adapters.api.role_api import RoleApi
+from app.adapters.api.role_permission_api import RolePermissionApi
 from app.adapters.api.tag_api import TagApi
 from app.adapters.api.test_api import TestApi
 from app.adapters.api.token_api import TokenApi
@@ -28,6 +29,7 @@ def include_routers(app) -> None:
     app.include_router(AuthApi().router, prefix="/auth", tags=["auth"])
 
     app.include_router(RoleApi().router, prefix="/role", tags=["role"])
+    app.include_router(RolePermissionApi().router, prefix="/role-permission", tags=["role-permission"])
     app.include_router(LanguageApi().router, prefix="/language", tags=["language"])
     app.include_router(PermissionApi().router, prefix="/permission", tags=["permission"])
     app.include_router(CourseCategoryApi().router, prefix="/course-category", tags=["course-category"])

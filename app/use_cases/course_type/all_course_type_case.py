@@ -12,8 +12,8 @@ class AllCourseTypeCase(BaseUseCase[List[CourseTypeRDTO]]):
         self.repository = CourseTypeRepository(db)
 
     async def execute(self) -> List[CourseTypeRDTO]:
-        roles = await self.repository.get_all()
-        return [CourseTypeRDTO.from_orm(role) for role in roles]
+        course_types = await self.repository.get_all()
+        return [CourseTypeRDTO.from_orm(course) for course in course_types]
 
     async def validate(self):
         pass
