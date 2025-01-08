@@ -11,6 +11,7 @@ from app.infrastructure.permission_constants import PermissionConstants
 from app.use_cases.question.all_question_case import AllQuestionsCase
 from app.use_cases.question.create_question_case import CreateQuestionCase
 from app.use_cases.question.delete_question_case import DeleteQuestionCase
+from app.use_cases.question.get_question_by_test_case import GetQuestionByTestCase
 from app.use_cases.question.get_question_case import GetQuestionCase
 from app.use_cases.question.update_question_case import UpdateQuestionCase
 
@@ -21,13 +22,18 @@ class QuestionApi:
         self._add_routes()
 
     def _add_routes(self) -> None:
-        pass
         self.router.get(
             "/",
             response_model=PaginationQuestions,
             summary="Список вопросов",
             description="Получение списка вопросов",
         )(self.get_all)
+        self.router.get(
+            "/get-by-test/{test_id}",
+            response_model=list[QuestionRDTO],
+            summary="Получить вопрос по уникальному ID",
+            description="Получение вопроса по уникальному идентификатору",
+        )(self.get_by_test)
         self.router.get(
             "/get/{id}",
             response_model=QuestionRDTOWithRelated,
@@ -57,6 +63,11 @@ class QuestionApi:
                       user=Depends(permission_dependency(PermissionConstants.READ_QUESTION_VALUE))):
         use_case = AllQuestionsCase(db=db)
         return await use_case.execute(params=params)
+
+    async def get_by_test(self, test_id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
+                  user=Depends(permission_dependency(PermissionConstants.READ_QUESTION_VALUE))):
+        use_case = GetQuestionByTestCase(db)
+        return await use_case.execute(test_id=test_id)
 
     async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
                   user=Depends(permission_dependency(PermissionConstants.READ_QUESTION_VALUE))):

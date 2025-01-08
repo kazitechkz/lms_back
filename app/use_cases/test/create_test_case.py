@@ -31,4 +31,7 @@ class CreateTestCase(BaseUseCase[TestRDTO]):
         if dto.organization_id:
             if await self.organization_repository.get(id=dto.organization_id) is None:
                 raise AppExceptionResponse.bad_request(message="Организация не найдена")
+        if dto.type_id == 2:
+            if dto.time_limit is None:
+                raise AppExceptionResponse.bad_request(message="Не указано время ожидания")
         return self.repository.model(**dto.dict())

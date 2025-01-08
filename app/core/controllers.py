@@ -14,6 +14,7 @@ from app.adapters.api.material_api import MaterialApi
 from app.adapters.api.organization_api import OrganizationApi
 from app.adapters.api.permission_api import PermissionApi
 from app.adapters.api.question_api import QuestionApi
+from app.adapters.api.question_attempt_api import QuestionAttemptApi
 from app.adapters.api.role_api import RoleApi
 from app.adapters.api.role_permission_api import RolePermissionApi
 from app.adapters.api.tag_api import TagApi
@@ -52,4 +53,5 @@ def include_routers(app) -> None:
     app.include_router(FeedbackApi().router, prefix="/feedback", tags=["feedback"])
     app.include_router(BlogCategoryApi().router, prefix="/blog-category", tags=["blog-category"])
     app.include_router(BlogApi().router, prefix="/blog", tags=["blog"])
+    app.include_router(QuestionAttemptApi().router, prefix="/question-attempt", tags=["question-attempt"])
 

@@ -19,6 +19,8 @@ class AppTableNames:
     CourseCategoryTableName = "course_categories"
     CourseTypeTableName = "course_types"
     TagTableName = "tags"
+    QuestionAttemptTableName = "question_attempts"
+    TestAttemptTableName = "test_attempts"
     BlogTableName = "blogs"
     BlogCategoryTableName = "blog_categories"
     QuestionTableName = "questions"
@@ -53,6 +55,8 @@ class AppTableNames:
     CourseTypeModelName = "CourseTypeModel"
     TestTypeModelName = "TestTypeModel"
     TagModelName = "TagModel"
+    QuestionAttemptModelName = "QuestionAttemptModel"
+    TestAttemptModelName = "TestAttemptModel"
     FeedbackModelName = "FeedbackModel"
     QuestionModelName = "QuestionModel"
     QuestionTypeModelName = "QuestionTypeModel"
@@ -373,6 +377,13 @@ class DTOConstant:
         bool,
         Field(
             description="Стандартное bool поле",
+        ),
+    ]
+
+    StandardNullableBoolean = Annotated[
+        Optional[bool],
+        Field(
+            description="Стандартное null bool поле",
         ),
     ]
 

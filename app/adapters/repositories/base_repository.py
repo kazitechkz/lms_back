@@ -26,6 +26,20 @@ class BaseRepository(Generic[T]):
         result = await self.db.execute(query)
         return result.scalars().first()
 
+    async def get_many(self, ids: list[int]):
+        """
+        Получить записи по списку идентификаторов.
+
+        :param ids: Список идентификаторов записей.
+        :return: Список объектов модели.
+        """
+        if not ids:
+            return []
+
+        query = select(self.model).where(self.model.id.in_(ids))
+        result = await self.db.execute(query)
+        return result.scalars().all()
+
     async def get_all(self, options: Optional[List[Any]] = None) -> List[T]:
         """Получение всех объектов."""
         query = select(self.model)
@@ -107,6 +121,28 @@ class BaseRepository(Generic[T]):
         except IntegrityError as e:
             await self.db.rollback()
             raise AppExceptionResponse.internal_error(message=self._parse_integrity_error(e))
+
+    async def create_many(self, objs: list):
+        """
+        Массовое создание записей.
+
+        :param objs: Список объектов модели.
+        :return: Список созданных объектов.
+        """
+        if not objs:
+            return []
+
+        # Добавляем все объекты в сессию
+        self.db.add_all(objs)
+
+        # Фиксируем изменения в базе данных
+        await self.db.commit()
+
+        # Обновляем объекты с возвращёнными ID (если есть автоинкремент)
+        for obj in objs:
+            await self.db.refresh(obj)
+
+        return objs
 
     async def update(self, obj: T, dto: BaseModel, options: Optional[List[Any]] = None) -> T:
         """Обновление объекта."""

@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.answer.answer_dto import AnswerRDTO, AnswerCDTO
-from app.adapters.dto.tag.tag_dto import TagRDTO, TagCDTO
 from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
@@ -12,12 +11,6 @@ from app.use_cases.answer.create_answer_case import CreateAnswerCase
 from app.use_cases.answer.delete_answer_case import DeleteAnswerCase
 from app.use_cases.answer.get_answer_case import GetAnswerCase
 from app.use_cases.answer.update_answer_case import UpdateAnswerCase
-from app.use_cases.tag.all_tags_case import AllTagsCase
-from app.use_cases.tag.create_tag_case import CreateTagCase
-from app.use_cases.tag.delete_tag_case import DeleteTagCase
-from app.use_cases.tag.get_tag_by_value_case import GetTagByValueCase
-from app.use_cases.tag.get_tag_case import GetTagCase
-from app.use_cases.tag.update_tag_case import UpdateTagCase
 
 
 class AnswerApi:
@@ -40,7 +33,7 @@ class AnswerApi:
         )(self.get)
         self.router.post(
             "/create",
-            response_model=AnswerRDTO,
+            response_model=list[AnswerRDTO],
             summary="Создать ответ",
             description="Создание ответа",
         )(self.create)
@@ -67,10 +60,10 @@ class AnswerApi:
         use_case = GetAnswerCase(db)
         return await use_case.execute(answer_id=id)
 
-    async def create(self, dto: AnswerCDTO, db: AsyncSession = Depends(get_db),
+    async def create(self, dtos: list[AnswerCDTO], db: AsyncSession = Depends(get_db),
                      user=Depends(permission_dependency(PermissionConstants.CREATE_ANSWER_VALUE))):
         use_case = CreateAnswerCase(db)
-        return await use_case.execute(dto=dto)
+        return await use_case.execute(dtos=dtos)
 
     async def update(
         self,

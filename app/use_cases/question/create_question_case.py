@@ -20,4 +20,9 @@ class CreateQuestionCase(BaseUseCase[QuestionRDTO]):
     async def validate(self, dto: QuestionCDTO):
         if await self.test_repository.get(id=dto.test_id) is None:
             raise AppExceptionResponse.bad_request(message="Тест не найден")
+        if dto.type_id == 1:
+            dto.points = 1
+        if dto.type_id == 2:
+            if dto.points is None:
+                raise AppExceptionResponse.bad_request(message="Не указано количество баллов")
         return self.repository.model(**dto.dict())

@@ -7,7 +7,7 @@ from app.core.app_exception_response import AppExceptionResponse
 from app.use_cases.base_case import BaseUseCase
 
 
-class GetQuestionCase(BaseUseCase[QuestionRDTO]):
+class GetQuestionCase(BaseUseCase[QuestionRDTOWithRelated]):
 
     def __init__(self, db: AsyncSession):
         self.repository = QuestionRepository(db)
