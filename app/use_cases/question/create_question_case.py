@@ -22,7 +22,7 @@ class CreateQuestionCase(BaseUseCase[QuestionRDTO]):
             raise AppExceptionResponse.bad_request(message="Тест не найден")
         if dto.type_id == 1:
             dto.points = 1
-        if dto.type_id == 2:
-            if dto.points is None:
-                raise AppExceptionResponse.bad_request(message="Не указано количество баллов")
+        # if dto.type_id == 2:
+        #     if dto.points is None:
+        #         raise AppExceptionResponse.bad_request(message="Не указано количество баллов")
         return self.repository.model(**dto.dict())

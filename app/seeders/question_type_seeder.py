@@ -26,6 +26,12 @@ class QuestionTypeSeeder(BaseSeeder):
                 title_kk="Көп жауапты",
                 title_en="Multiple choices",
                 value=AppDbValueConstants.MULTIPLE_CHOICE_VALUE
+            ),
+            QuestionTypeModel(
+                title_ru="Психологический",
+                title_kk="Психологиялық",
+                title_en="Psychological",
+                value=AppDbValueConstants.PSYCHOLOGICAL_VALUE
             )
         ]
 

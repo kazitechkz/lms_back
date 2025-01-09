@@ -1,31 +1,18 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.answer.answer_dto import AnswerRDTO, AnswerCDTO
 from app.adapters.dto.feedback.feedback_dto import FeedbackRDTOWithRelated, FeedbackCDTO
 from app.adapters.dto.pagination_dto import PaginationFeedbacks
-from app.adapters.dto.tag.tag_dto import TagRDTO, TagCDTO
 from app.adapters.filters.feedback.feedback_filter import FeedbackFilter
 from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
 from app.infrastructure.db_constants import PathConstants
 from app.infrastructure.permission_constants import PermissionConstants
-from app.use_cases.answer.all_answers_case import AllAnswersCase
-from app.use_cases.answer.create_answer_case import CreateAnswerCase
-from app.use_cases.answer.delete_answer_case import DeleteAnswerCase
-from app.use_cases.answer.get_answer_case import GetAnswerCase
-from app.use_cases.answer.update_answer_case import UpdateAnswerCase
 from app.use_cases.feedback.all_feedbacks_case import AllFeedbacksCase
 from app.use_cases.feedback.create_feedback_case import CreateFeedbackCase
 from app.use_cases.feedback.delete_feedback_case import DeleteFeedbackCase
 from app.use_cases.feedback.get_feedback_case import GetFeedbackCase
 from app.use_cases.feedback.update_feedback_case import UpdateFeedbackCase
-from app.use_cases.tag.all_tags_case import AllTagsCase
-from app.use_cases.tag.create_tag_case import CreateTagCase
-from app.use_cases.tag.delete_tag_case import DeleteTagCase
-from app.use_cases.tag.get_tag_by_value_case import GetTagByValueCase
-from app.use_cases.tag.get_tag_case import GetTagCase
-from app.use_cases.tag.update_tag_case import UpdateTagCase
 
 
 class FeedbackApi:

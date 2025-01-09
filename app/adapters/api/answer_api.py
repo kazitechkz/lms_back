@@ -10,7 +10,6 @@ from app.use_cases.answer.all_answers_case import AllAnswersCase
 from app.use_cases.answer.create_answer_case import CreateAnswerCase
 from app.use_cases.answer.delete_answer_case import DeleteAnswerCase
 from app.use_cases.answer.get_answer_case import GetAnswerCase
-from app.use_cases.answer.update_answer_case import UpdateAnswerCase
 
 
 class AnswerApi:
@@ -32,17 +31,11 @@ class AnswerApi:
             description="Получение ответа по уникальному идентификатору",
         )(self.get)
         self.router.post(
-            "/create",
+            "/create-or-update",
             response_model=list[AnswerRDTO],
-            summary="Создать ответ",
-            description="Создание ответа",
-        )(self.create)
-        self.router.put(
-            "/update/{id}",
-            response_model=AnswerRDTO,
-            summary="Обновить ответ по уникальному ID",
-            description="Обновление ответа по уникальному идентификатору",
-        )(self.update)
+            summary="Создать или обновить ответ",
+            description="Создание или обновление ответа",
+        )(self.create_or_update)
         self.router.delete(
             "/delete/{id}",
             response_model=bool,
@@ -60,20 +53,11 @@ class AnswerApi:
         use_case = GetAnswerCase(db)
         return await use_case.execute(answer_id=id)
 
-    async def create(self, dtos: list[AnswerCDTO], db: AsyncSession = Depends(get_db),
+    async def create_or_update(self, dtos: list[AnswerCDTO], db: AsyncSession = Depends(get_db),
                      user=Depends(permission_dependency(PermissionConstants.CREATE_ANSWER_VALUE))):
         use_case = CreateAnswerCase(db)
         return await use_case.execute(dtos=dtos)
 
-    async def update(
-        self,
-        id: PathConstants.IDPath,
-        dto: AnswerCDTO,
-        db: AsyncSession = Depends(get_db),
-            user=Depends(permission_dependency(PermissionConstants.UPDATE_ANSWER_VALUE))
-    ):
-        use_case = UpdateAnswerCase(db)
-        return await use_case.execute(id=id, dto=dto)
 
     async def delete(
         self,

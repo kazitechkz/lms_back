@@ -34,4 +34,6 @@ class CreateTestCase(BaseUseCase[TestRDTO]):
         if dto.type_id == 2:
             if dto.time_limit is None:
                 raise AppExceptionResponse.bad_request(message="Не указано время ожидания")
+        if dto.type_id == 3:
+            dto.pass_point = 0
         return self.repository.model(**dto.dict())

@@ -104,12 +104,14 @@ class AppDbValueConstants:
     )
 
     # TestTypes
-    TEST_VALUE = "test_value"
-    EXAM_VALUE = "exam_value"
+    TEST_TEST_VALUE = "test_value"
+    EXAM_TEST_VALUE = "exam_value"
+    PSYCHOLOGICAL_TEST_VALUE = "psychological_value"
     IMMUTABLE_TEST_TYPES = frozenset(
         [
-            TEST_VALUE,
-            EXAM_VALUE,
+            TEST_TEST_VALUE,
+            EXAM_TEST_VALUE,
+            PSYCHOLOGICAL_TEST_VALUE,
         ]
     )
 
@@ -117,11 +119,13 @@ class AppDbValueConstants:
     MULTIPLE_CHOICE_VALUE = "multiple_choice"
     DISTRIBUTION_VALUE = "distribution_value"
     SINGLE_CHOICE_VALUE = "single_choice"
+    PSYCHOLOGICAL_VALUE = "psychological_choice"
     IMMUTABLE_QUESTION_TYPES = frozenset(
         [
             MULTIPLE_CHOICE_VALUE,
             DISTRIBUTION_VALUE,
             SINGLE_CHOICE_VALUE,
+            PSYCHOLOGICAL_VALUE,
         ]
     )
 
@@ -181,6 +185,7 @@ class FieldConstants:
 
 class ColumnConstants:
     ID = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
+    NullableIDs = Annotated[list[int], mapped_column(JSON, nullable=True)]
     # ForeignKey унификации с onupdate и ondelete
     ForeignKeyInteger = (
         lambda table_name, onupdate=None, ondelete=None, foreign_column="id": Annotated[

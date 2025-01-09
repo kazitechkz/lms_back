@@ -19,6 +19,7 @@ class QuestionAttemptModel(Base):
     answer_id: Mapped[ColumnConstants.ForeignKeyNullableInteger(
         table_name=AppTableNames.AnswerTableName
     )]
+    answer_ids: Mapped[ColumnConstants.NullableIDs]
     is_correct: Mapped[ColumnConstants.StandardBool]
     point: Mapped[ColumnConstants.StandardInteger]
     created_at: Mapped[ColumnConstants.CreatedAt]

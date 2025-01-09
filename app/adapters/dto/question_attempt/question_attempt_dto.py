@@ -18,7 +18,8 @@ class QuestionAttemptRDTO(QuestionAttemptDTO):
     test_id: DTOConstant.StandardID
     question_id: DTOConstant.StandardID
     answer_id: Optional[int] = Field(default=None, description="ID ответа")
-    is_correct: DTOConstant.StandardNullableBoolean
+    answer_ids: Optional[list[int]] = Field(default=None, description="IDs ответов")
+    is_correct: Optional[bool] = Field(default=False, description="Правильность ответа")
     point: int = Field(description="Баллы")
 
     created_at: DTOConstant.StandardCreatedAt
@@ -33,7 +34,8 @@ class QuestionAttemptCDTO(BaseModel):
     test_id: DTOConstant.StandardID
     question_id: DTOConstant.StandardID
     answer_id: Optional[int] = Field(default=None, description="ID ответа")
-    is_correct: DTOConstant.StandardNullableBoolean
+    answer_ids: Optional[list[int]] = Field(default=None, description="IDs ответов")
+    is_correct: Optional[bool] = Field(default=False, description="Правильность ответа")
     point: int = Field(description="Баллы")
 
     class Config:
@@ -49,4 +51,11 @@ class SingleAnswerCDTO(BaseModel):
 class MultipleAnswerCDTO(BaseModel):
     question_id: DTOConstant.StandardID
     answer_ids: List[DTOConstant.StandardID]
+    is_last: DTOConstant.StandardBoolean = False
+
+
+class PsychologicalAnswerCDTO(BaseModel):
+    question_id: DTOConstant.StandardID
+    answer_ids: List[DTOConstant.StandardID]
+    is_last: DTOConstant.StandardBoolean = False
 

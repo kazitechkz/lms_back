@@ -25,6 +25,7 @@ def upgrade() -> None:
         sa.Column("test_id", sa.Integer(), nullable=False),
         sa.Column("question_id", sa.Integer(), nullable=False),
         sa.Column("answer_id", sa.Integer(), nullable=True),
+        sa.Column("answer_ids", sa.JSON(), nullable=True),
         sa.Column("is_correct", sa.Boolean(), nullable=False),
         sa.Column("point", sa.Integer(), nullable=False),
         sa.Column(

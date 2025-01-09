@@ -20,13 +20,19 @@ class TestTypeSeeder(BaseSeeder):
                 title_ru="Тест",
                 title_kk="Тест",
                 title_en="Test",
-                value=AppDbValueConstants.TEST_VALUE
+                value=AppDbValueConstants.TEST_TEST_VALUE
             ),
             TestTypeModel(
                 title_ru="Экзамен",
                 title_kk="Емтихан",
                 title_en="Examen",
-                value=AppDbValueConstants.EXAM_VALUE
+                value=AppDbValueConstants.EXAM_TEST_VALUE
+            ),
+            TestTypeModel(
+                title_ru="Психологический",
+                title_kk="Психологиялық",
+                title_en="Psychological",
+                value=AppDbValueConstants.PSYCHOLOGICAL_TEST_VALUE
             )
         ]
 
