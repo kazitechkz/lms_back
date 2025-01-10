@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 
+from app.adapters.dto.user.user_dto import UserRDTO
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -28,6 +29,7 @@ class AuthRDTO(BaseModel):
     access_token: DTOConstant.StandardVarchar
     refresh_token: DTOConstant.StandardVarchar
     token_type: DTOConstant.StandardVarchar
+    user: UserRDTO
 
     class Config:
         from_attributes = True

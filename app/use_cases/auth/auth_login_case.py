@@ -2,6 +2,7 @@ from sqlalchemy import and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.auth.auth_dto import AuthRDTO, AuthCDTO
+from app.adapters.dto.user.user_dto import UserRDTO
 from app.adapters.repositories.auth.auth_repository import AuthRepository
 from app.core.app_exception_response import AppExceptionResponse
 from app.core.auth_core import verify_password, create_access_token, create_refresh_token
@@ -32,5 +33,6 @@ class AuthLoginUseCase(BaseUseCase[AuthRDTO]):
         return AuthRDTO(
             access_token=access_token,
             refresh_token=refresh_token,
-            token_type="bearer"
+            token_type="bearer",
+            user=UserRDTO.from_orm(user)
         )
