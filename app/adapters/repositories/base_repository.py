@@ -189,6 +189,12 @@ class BaseRepository(Generic[T]):
         )
         await self.db.commit()
 
+    async def delete_with_filters(self, filters: list):
+        await self.db.execute(
+            delete(self.model).where(*filters)
+        )
+        await self.db.commit()
+
     def _parse_integrity_error(self, error: IntegrityError) -> str:
         """Парсинг ошибок уникальности."""
         orig_msg = str(error.orig)
