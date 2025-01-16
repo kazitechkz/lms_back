@@ -39,9 +39,9 @@ class CourseRDTO(CourseDTO):
 
 class CourseCDTO(BaseModel):
     title: DTOConstant.StandardTitleRu
-    short_description: Optional[DTOConstant.StandardText]
-    description: DTOConstant.StandardText
-    learned: DTOConstant.StandardText
+    short_description: str | None = Field(default=None, description="Краткое описание курса")
+    description: str = Field(default=None, description="Краткое описание курса")
+    learned: str = Field(default=None, description="Краткое описание курса")
     price: int = Field(default=None, description="Стоимость курса")
     thumbnail: str | None = Field(default=None, description="Обложка курса")
     author: Optional[DTOConstant.StandardValue]

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.course.course_dto import CourseCDTO, CourseRDTOWithRelated
@@ -13,6 +13,29 @@ from app.use_cases.course.create_course_case import CreateCourseCase
 from app.use_cases.course.delete_course_case import DeleteCourseCase
 from app.use_cases.course.get_course_case import GetCourseCase
 from app.use_cases.course.update_course_case import UpdateCourseCase
+
+
+def parse_dto_from_form(title: str = Form(...),
+                        short_description: str | None = Form(None),
+                        description: str = Form(...),
+                        learned: str = Form(...),
+                        author: str | None = Form(None),
+                        price: int = Form(...),
+                        category_id: int = Form(...),
+                        type_id: int = Form(...),
+                        lang_id: int = Form(...),
+                        ) -> CourseCDTO:
+    return CourseCDTO(
+        title=title,
+        description=description,
+        short_description=short_description,
+        learned=learned,
+        author=author,
+        price=price,
+        category_id=category_id,
+        type_id=type_id,
+        lang_id=lang_id,
+    )
 
 
 class CourseApi:
@@ -62,7 +85,7 @@ class CourseApi:
         use_case = GetCourseCase(db)
         return await use_case.execute(course_id=id)
 
-    async def create(self, dto: CourseCDTO = Depends(),
+    async def create(self, dto: CourseCDTO = Depends(parse_dto_from_form),
                      db: AsyncSession = Depends(get_db),
                      thumbnail: UploadFile | None = File(default=None, description="Обложка курса"),
                      user=Depends(permission_dependency(PermissionConstants.CREATE_COURSE_VALUE))):
@@ -72,7 +95,7 @@ class CourseApi:
     async def update(
             self,
             id: PathConstants.IDPath,
-            dto: CourseCDTO = Depends(),
+            dto: CourseCDTO = Depends(parse_dto_from_form),
             thumbnail: UploadFile | None = File(default=None, description="Обложка курса"),
             db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.UPDATE_COURSE_VALUE))
