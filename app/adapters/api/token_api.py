@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, Form
-from pydantic import Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infrastructure.database import get_db

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.pagination_dto import PaginationVideoCourses
@@ -14,7 +14,23 @@ from app.use_cases.video_course.delete_video_course_case import DeleteVideoCours
 from app.use_cases.video_course.get_video_course_case import GetVideoCourseCase
 from app.use_cases.video_course.update_video_course_case import UpdateVideoCourseCase
 
-
+def parse_dto_from_form(title: str = Form(...),
+                        description: str = Form(...),
+                        level: int = Form(...),
+                        course_id: int = Form(...),
+                        lang_id: int = Form(...),
+                        is_first: bool = Form(...),
+                        is_last: bool = Form(...)
+                        ) -> VideoCourseCDTO:
+    return VideoCourseCDTO(
+        title=title,
+        description=description,
+        level=level,
+        course_id=course_id,
+        lang_id=lang_id,
+        is_first=is_first,
+        is_last=is_last,
+    )
 class VideoCourseApi:
     def __init__(self) -> None:
         self.router = APIRouter()
@@ -63,7 +79,7 @@ class VideoCourseApi:
         use_case = GetVideoCourseCase(db)
         return await use_case.execute(video_course_id=id)
 
-    async def create(self, dto: VideoCourseCDTO = Depends(), db: AsyncSession = Depends(get_db),
+    async def create(self, dto: VideoCourseCDTO = Depends(parse_dto_from_form), db: AsyncSession = Depends(get_db),
                      image: UploadFile = File(default=None, description="Обложка видео"),
                      video: UploadFile = File(default=None, description="Видео"),
                      user=Depends(permission_dependency(PermissionConstants.CREATE_VIDEO_COURSE_VALUE))):

@@ -15,8 +15,12 @@ class CreateTokenCase(BaseUseCase[TokenRDTO]):
         self.repository = TokenRepository(db)
 
     async def execute(self, device_code: str):
-        await self.validate(device_code=device_code)
-        return True
+        res = await self.validate(device_code=device_code)
+
+        if res is False:
+            return False
+        else:
+            return True
 
     async def validate(self, device_code: str):
         token = await self.repository.get(id=1)
@@ -33,6 +37,8 @@ class CreateTokenCase(BaseUseCase[TokenRDTO]):
             client_secret=app_config.google_secret,
             device_code=device_code
         )
+        if tokens.get('error'):
+            return False
         dto = TokenCDTO(
             access_token=tokens.get('access_token'),
             refresh_token=tokens.get('refresh_token')
@@ -46,7 +52,7 @@ class CreateTokenCase(BaseUseCase[TokenRDTO]):
         token_url = "https://oauth2.googleapis.com/token"
 
         while True:
-            await asyncio.sleep(interval)
+            # await asyncio.sleep(interval)
             token_payload = {
                 "client_id": client_id,
                 "client_secret": client_secret,
@@ -59,5 +65,8 @@ class CreateTokenCase(BaseUseCase[TokenRDTO]):
                 return token_response.json()
             elif token_response.json().get("error") == "authorization_pending":
                 print("Ожидание авторизации пользователя...")
+                return token_response.json()
             else:
-                raise Exception(f"Ошибка авторизации устройства: {token_response.status_code} - {token_response.text}")
+                raise AppExceptionResponse.bad_request(
+                    message=f"Ошибка авторизации устройства: {token_response.status_code} - {token_response.text}"
+                )
