@@ -9,7 +9,7 @@ class VideoCourseFilter(BaseFilter):
     def __init__(
             self,
             per_page: int = Query(
-                default=1, gt=0, example=20, description="Количество элементов на страницу"
+                default=20, gt=0, example=20, description="Количество элементов на страницу"
             ),
             page: int = Query(default=1, ge=1, example=1, description="Номер страницы"),
             course_id: int | None = Query(default=None, example=1, description="ID course"),

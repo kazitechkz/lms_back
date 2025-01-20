@@ -19,6 +19,7 @@ from app.adapters.api.role_api import RoleApi
 from app.adapters.api.role_permission_api import RolePermissionApi
 from app.adapters.api.tag_api import TagApi
 from app.adapters.api.test_api import TestApi
+from app.adapters.api.test_type_api import TestTypeApi
 from app.adapters.api.token_api import TokenApi
 from app.adapters.api.user_api import UserApi
 from app.adapters.api.user_type_api import UserTypeApi
@@ -47,6 +48,7 @@ def include_routers(app) -> None:
     app.include_router(VideoMaterialApi().router, prefix="/video-material", tags=["video-material"])
     app.include_router(OrganizationApi().router, prefix="/organization", tags=["organization"])
     app.include_router(TestApi().router, prefix="/test", tags=["test"])
+    app.include_router(TestTypeApi().router, prefix="/test-type", tags=["test-type"])
     app.include_router(QuestionApi().router, prefix="/question", tags=["question"])
     app.include_router(CharacteristicApi().router, prefix="/characteristic", tags=["characteristic"])
     app.include_router(AnswerApi().router, prefix="/answer", tags=["answer"])

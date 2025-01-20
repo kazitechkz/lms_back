@@ -7,6 +7,7 @@ from app.adapters.dto.course_tag.course_tag_dto import CourseTagRDTOWithRelated
 from app.adapters.dto.course_type.course_type_dto import CourseTypeRDTO
 from app.adapters.dto.language.language_dto import LanguageRDTO
 from app.adapters.dto.material.material_dto import MaterialRDTOWithRelated
+from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTO
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -58,8 +59,9 @@ class CourseRDTOWithRelated(CourseRDTO):
     type: Optional[CourseTypeRDTO] = Field(default=None, description="Тип курса")
     category: Optional[CourseCategoryRDTO] = Field(default=None, description="Категория курса")
     lang: Optional[LanguageRDTO] = Field(default=None, description="Язык курса")
-    tags: Optional[list[CourseTagRDTOWithRelated]] = Field(description="Теги курса")
-    materials: Optional[list[MaterialRDTOWithRelated]] = Field(description="Материалы курса")
+    tags: Optional[list[CourseTagRDTOWithRelated]] = Field(default=None, description="Теги курса")
+    materials: Optional[list[MaterialRDTOWithRelated]] = Field(default=None, description="Материалы курса")
+    video_courses: Optional[list[VideoCourseRDTO]] = Field(default=None, description="Видео курса")
 
     class Config:
         from_attributes = True

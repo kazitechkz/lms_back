@@ -25,7 +25,8 @@ class AllCoursesCase(BaseUseCase[PaginationCourse]):
                 selectinload(self.repository.model.lang),
                 selectinload(self.repository.model.type),
                 selectinload(self.repository.model.tags).selectinload(CourseTagModel.tag),
-                selectinload(self.repository.model.materials)
+                selectinload(self.repository.model.materials),
+                selectinload(self.repository.model.video_courses)
             ]
         )
 

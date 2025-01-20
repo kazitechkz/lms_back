@@ -3,6 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 
 from app.entities.course_material import CourseMaterialModel
+from app.entities.video_courses import VideoCourseModel
 from app.infrastructure.database import Base
 from app.infrastructure.db_constants import (AppTableNames, ColumnConstants)
 
@@ -39,6 +40,10 @@ class CourseModel(Base):
     lang: Mapped[AppTableNames.LanguageModelName] = relationship(AppTableNames.LanguageModelName)
     materials: Mapped[list[CourseMaterialModel]] = relationship(
         f"{AppTableNames.CourseMaterialModelName}",
+        viewonly=True
+    )
+    video_courses: Mapped[list[VideoCourseModel]] = relationship(
+        f"{AppTableNames.VideoCourseModelName}",
         viewonly=True
     )
     tags: Mapped[list[AppTableNames.CourseTagModelName]] = relationship(
