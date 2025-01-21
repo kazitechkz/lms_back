@@ -12,6 +12,7 @@ from app.adapters.api.file_api import FileApi
 from app.adapters.api.language_api import LanguageApi
 from app.adapters.api.material_api import MaterialApi
 from app.adapters.api.organization_api import OrganizationApi
+from app.adapters.api.organization_type_api import OrganizationTypeApi
 from app.adapters.api.permission_api import PermissionApi
 from app.adapters.api.question_api import QuestionApi
 from app.adapters.api.question_attempt_api import QuestionAttemptApi
@@ -49,6 +50,7 @@ def include_routers(app) -> None:
     app.include_router(OrganizationApi().router, prefix="/organization", tags=["organization"])
     app.include_router(TestApi().router, prefix="/test", tags=["test"])
     app.include_router(TestTypeApi().router, prefix="/test-type", tags=["test-type"])
+    app.include_router(OrganizationTypeApi().router, prefix="/organization-type", tags=["organization-type"])
     app.include_router(QuestionApi().router, prefix="/question", tags=["question"])
     app.include_router(CharacteristicApi().router, prefix="/characteristic", tags=["characteristic"])
     app.include_router(AnswerApi().router, prefix="/answer", tags=["answer"])
