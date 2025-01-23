@@ -1,7 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.adapters.dto.pagination_dto import PaginationTests
-from app.adapters.dto.test.test_dto import TestRDTO
+from app.adapters.dto.test.test_dto import TestRDTO, TestRDTOWithRelated
 from app.adapters.filters.test.test_filter import TestFilter
 from app.adapters.repositories.test.test_repository import TestRepository
 from app.use_cases.base_case import BaseUseCase
@@ -13,10 +14,13 @@ class AllTestsCase(BaseUseCase[PaginationTests]):
 
     async def execute(self, params: TestFilter):
         tests = await self.repository.paginate(
-            dto=TestRDTO,
+            dto=TestRDTOWithRelated,
             page=params.page,
             per_page=params.per_page,
-            filters=params.apply()
+            filters=params.apply(),
+            options=[
+                selectinload(self.repository.model.type)
+            ]
         )
         return tests
 

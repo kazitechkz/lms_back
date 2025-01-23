@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.adapters.dto.organization.organization_dto import OrganizationRDTOWithRelated, OrganizationCDTO
+from app.adapters.dto.organization.organization_dto import OrganizationRDTOWithRelated, OrganizationCDTO, \
+    OrganizationRDTO
 from app.adapters.dto.pagination_dto import PaginationOrganizations
 from app.adapters.filters.organization.organization_filter import OrganizationFilter
 from app.core.auth_core import permission_dependency
@@ -28,6 +29,12 @@ class OrganizationApi:
             summary="Список организаций",
             description="Получение списка организаций",
         )(self.get_all)
+        self.router.get(
+            "/get-without-paginate",
+            response_model=list[OrganizationRDTO],
+            summary="Список организаций",
+            description="Получение списка организаций",
+        )(self.get_all_without_paginate)
         self.router.get(
             "/get/{id}",
             response_model=OrganizationRDTOWithRelated,
@@ -64,6 +71,11 @@ class OrganizationApi:
                       user=Depends(permission_dependency(PermissionConstants.READ_ORGANIZATION_VALUE))):
         use_case = AllOrganizationsCase(db)
         return await use_case.execute(params=params)
+
+    async def get_all_without_paginate(self, db: AsyncSession = Depends(get_db),
+                      user=Depends(permission_dependency(PermissionConstants.READ_ORGANIZATION_VALUE))):
+        use_case = AllOrganizationsCase(db)
+        return await use_case.get_all_without_paginate()
 
     async def get(self, id: PathConstants.IDPath, db: AsyncSession = Depends(get_db),
                   user=Depends(permission_dependency(PermissionConstants.READ_ORGANIZATION_VALUE))):

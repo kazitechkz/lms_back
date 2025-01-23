@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from app.adapters.dto.test_type.tag_type_dto import TestTypeRDTO
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -56,3 +57,7 @@ class TestUDTO(BaseModel):
     video_id: Optional[int] = Field(None, description="ID видеокурса, если тест привязан к видеокурсу")
     time_limit: Optional[int] = Field(None, ge=0, description="Ограничение по времени в минутах (0 для безлимита)")
     pass_point: Optional[int] = Field(None, ge=0, le=100, description="Проходной балл в процентах (от 0 до 100)")
+
+
+class TestRDTOWithRelated(TestRDTO):
+    type: TestTypeRDTO

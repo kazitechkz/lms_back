@@ -8,7 +8,7 @@ from app.adapters.dto.course.course_dto import CourseRDTOWithRelated
 from app.adapters.dto.feedback.feedback_dto import FeedbackRDTOWithRelated
 from app.adapters.dto.organization.organization_dto import OrganizationRDTOWithRelated
 from app.adapters.dto.question.question_dto import QuestionRDTOWithRelated
-from app.adapters.dto.test.test_dto import TestRDTO
+from app.adapters.dto.test.test_dto import TestRDTO, TestRDTOWithRelated
 from app.adapters.dto.user.user_dto import UserRDTOWithRelated
 from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTOWithRelated
 
@@ -64,7 +64,7 @@ class PaginationOrganizations(BasePageModel):
 
 
 class PaginationTests(BasePageModel):
-    items: list[TestRDTO]
+    items: list[TestRDTOWithRelated]
 
 
 class PaginationQuestions(BasePageModel):
