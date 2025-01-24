@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from fastapi import File
 from sqlalchemy import and_
@@ -24,10 +24,10 @@ class UpdateVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
 
     async def execute(self, id: int, dto: VideoCourseCDTO,
                       user: UserRDTOWithRelated,
-                      image: Optional[File] = None,
+                      image: Optional[Union[File, str]] = None,
                       video: Optional[File] = None) -> VideoCourseRDTOWithRelated:
         obj = await self.validate(id=id, dto=dto)
-        if image is None:
+        if isinstance(image, str):
             dto.image = obj.image
         else:
             dto.image = await self.upload_file_use_case.execute(file=image, upload_path="course_images/")

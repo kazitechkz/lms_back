@@ -1,3 +1,5 @@
+from typing import Union
+
 from fastapi import APIRouter, Depends, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -89,8 +91,8 @@ class VideoCourseApi:
     async def update(
             self,
             id: PathConstants.IDPath,
-            dto: VideoCourseCDTO = Depends(),
-            image: UploadFile | None = File(default=None, description="Обложка видео"),
+            dto: VideoCourseCDTO = Depends(parse_dto_from_form),
+            image: Union[UploadFile, str, None] = File(default=None, description="Обложка видео"),
             video: UploadFile | None = File(default=None, description="Видео"),
             db: AsyncSession = Depends(get_db),
             user=Depends(permission_dependency(PermissionConstants.UPDATE_VIDEO_COURSE_VALUE))

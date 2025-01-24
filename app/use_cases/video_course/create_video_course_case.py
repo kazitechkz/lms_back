@@ -42,12 +42,13 @@ class CreateVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
         if video_course is not None:
             raise AppExceptionResponse.bad_request(message="Курс с таким уровнем и языком уже существует")
         first_video_course = await self.repository.get_first_with_filters(filters=[
-            and_(self.repository.model.is_first.is_(True), self.repository.model.is_last.is_(False))
+            and_(self.repository.model.is_first.is_(True))
         ])
         if first_video_course is not None:
-            raise AppExceptionResponse.bad_request(
-                message="Невозможно создать два вводных видео, так как в курсе уже имеется одно."
-            )
+            if dto.is_first == True:
+                raise AppExceptionResponse.bad_request(
+                    message="Невозможно создать два вводных видео, так как в курсе уже имеется одно."
+                )
         last_video_course = await self.repository.get_first_with_filters(filters=[
             and_(self.repository.model.is_last.is_(True))
         ])
@@ -56,9 +57,10 @@ class CreateVideoCourseCase(BaseUseCase[VideoCourseRDTOWithRelated]):
                 raise AppExceptionResponse.bad_request(
                     message="Невозможно создать видео с уровнем выше, чем у последнего."
                 )
-            raise AppExceptionResponse.bad_request(
-                message="Невозможно создать два финальных видео, так как в курсе уже есть одно заключительное."
-            )
+            if dto.is_last == True:
+                raise AppExceptionResponse.bad_request(
+                    message="Невозможно создать два финальных видео, так как в курсе уже есть одно заключительное."
+                )
         if image is None or video is None:
             raise AppExceptionResponse.bad_request(message="Необходимо загрузить обложку и видео")
         if video is not None:
