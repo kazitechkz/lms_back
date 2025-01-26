@@ -30,7 +30,6 @@ class CourseRDTO(CourseDTO):
     type_id: int = Field(default=None, description="Уникальный ID типа курса")
     category_id: int = Field(default=None, description="Уникальный ID категории курса")
     lang_id: int = Field(default=None, description="Уникальный ID языка")
-    tags: Optional[list[int]] = Field(default=None, description="Теги курса")
     created_at: DTOConstant.StandardCreatedAt
     updated_at: DTOConstant.StandardUpdatedAt
 

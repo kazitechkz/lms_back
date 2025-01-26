@@ -2,7 +2,9 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from app.adapters.dto.course.course_dto import CourseRDTO
 from app.adapters.dto.test_type.tag_type_dto import TestTypeRDTO
+from app.adapters.dto.video_course.video_course_dto import VideoCourseRDTO
 from app.infrastructure.db_constants import DTOConstant
 
 
@@ -61,3 +63,5 @@ class TestUDTO(BaseModel):
 
 class TestRDTOWithRelated(TestRDTO):
     type: TestTypeRDTO
+    video: Optional[VideoCourseRDTO] = None
+    course: Optional[CourseRDTO] = None

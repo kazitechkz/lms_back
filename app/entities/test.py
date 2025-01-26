@@ -54,8 +54,8 @@ class TestModel(Base):
 
     type: Mapped[AppTableNames.TestTypeModelName] = relationship(AppTableNames.TestTypeModelName)
     organization: Mapped[AppTableNames.OrganizationModelName] = relationship(AppTableNames.OrganizationModelName)
-    course: Mapped[AppTableNames.CourseModelName] = relationship(AppTableNames.CourseModelName)
-    video: Mapped[AppTableNames.VideoCourseModelName] = relationship(AppTableNames.VideoCourseModelName)
+    course: Mapped[AppTableNames.CourseModelName] = relationship(AppTableNames.CourseModelName, lazy="noload")
+    video: Mapped[AppTableNames.VideoCourseModelName] = relationship(AppTableNames.VideoCourseModelName, lazy="noload")
     created_at: Mapped[ColumnConstants.CreatedAt]
     updated_at: Mapped[ColumnConstants.UpdatedAt]
 

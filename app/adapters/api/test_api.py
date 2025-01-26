@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.dto.pagination_dto import PaginationTests
-from app.adapters.dto.test.test_dto import TestRDTO, TestCDTO, TestUDTO
+from app.adapters.dto.test.test_dto import TestRDTO, TestCDTO, TestUDTO, TestRDTOWithRelated
 from app.adapters.filters.test.test_filter import TestFilter
 from app.core.auth_core import permission_dependency
 from app.infrastructure.database import get_db
@@ -30,7 +30,7 @@ class TestApi:
         )(self.get_all)
         self.router.get(
             "/get/{id}",
-            response_model=TestRDTO,
+            response_model=TestRDTOWithRelated,
             summary="Получить тест по уникальному ID",
             description="Получение теста по уникальному идентификатору",
         )(self.get)
