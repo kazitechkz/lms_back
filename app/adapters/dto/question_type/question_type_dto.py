@@ -22,3 +22,10 @@ class QuestionTypeRDTO(QuestionTypeDTO):
 
     class Config:
         from_attributes = True
+
+
+class QuestionTypeCDTO(BaseModel):
+    title_ru: DTOConstant.StandardTitleRu
+    title_kk: DTOConstant.StandardTitleKk
+    title_en: DTOConstant.StandardTitleEn
+    value: DTOConstant.StandardValue

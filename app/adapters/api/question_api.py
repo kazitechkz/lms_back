@@ -42,13 +42,13 @@ class QuestionApi:
         )(self.get)
         self.router.post(
             "/create",
-            response_model=QuestionRDTO,
+            response_model=QuestionRDTOWithRelated,
             summary="Создать вопрос",
             description="Создание вопроса",
         )(self.create)
         self.router.put(
             "/update/{id}",
-            response_model=QuestionRDTO,
+            response_model=QuestionRDTOWithRelated,
             summary="Обновить вопрос по уникальному ID",
             description="Обновление вопроса по уникальному идентификатору",
         )(self.update)

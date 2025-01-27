@@ -16,6 +16,7 @@ from app.adapters.api.organization_type_api import OrganizationTypeApi
 from app.adapters.api.permission_api import PermissionApi
 from app.adapters.api.question_api import QuestionApi
 from app.adapters.api.question_attempt_api import QuestionAttemptApi
+from app.adapters.api.question_type_api import QuestionTypeApi
 from app.adapters.api.role_api import RoleApi
 from app.adapters.api.role_permission_api import RolePermissionApi
 from app.adapters.api.tag_api import TagApi
@@ -51,6 +52,7 @@ def include_routers(app) -> None:
     app.include_router(TestApi().router, prefix="/test", tags=["test"])
     app.include_router(TestTypeApi().router, prefix="/test-type", tags=["test-type"])
     app.include_router(OrganizationTypeApi().router, prefix="/organization-type", tags=["organization-type"])
+    app.include_router(QuestionTypeApi().router, prefix="/question-type", tags=["question-type"])
     app.include_router(QuestionApi().router, prefix="/question", tags=["question"])
     app.include_router(CharacteristicApi().router, prefix="/characteristic", tags=["characteristic"])
     app.include_router(AnswerApi().router, prefix="/answer", tags=["answer"])
